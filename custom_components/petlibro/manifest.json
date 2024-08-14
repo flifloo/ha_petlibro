@@ -1,0 +1,11 @@
+{
+  "codeowners": ["@flifloo"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/flifloo/ha_petlibro",
+  "domain": "petlibro",
+  "iot_class": "cloud_polling",
+  "name": "PETLIBRO",
+  "requirements": [],
+  "version": "1.0.0"
+}
