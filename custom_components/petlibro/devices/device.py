@@ -25,7 +25,7 @@ class Device(Event):
         """Refresh the device data from the API."""
         data = {}
         data.update(await self.api.device_base_info(self.serial))
-        data.update(await self.api.device_realInfo(self.serial))
+        data.update(await self.api.device_real_info(self.serial))
         self.update_data(data)
 
     @property

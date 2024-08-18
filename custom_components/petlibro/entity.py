@@ -9,8 +9,6 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity, DataUpdateCoordinator
 
-from custom_components.petlibro.devices.feeders.granary_feeder import GranaryFeeder
-
 from .devices import Device
 from .devices.event import EVENT_UPDATE
 from .const import DOMAIN
@@ -54,5 +52,5 @@ class PetLibroEntity(
         await super().async_added_to_hass()
         self.async_on_remove(self.device.on(EVENT_UPDATE, self.async_write_ha_state))
 
-class PetLibroEntityDescription(EntityDescription, Generic[_DeviceT]):
+class PetLibroEntityDescription(EntityDescription, frozen_or_thawed=True):
     """PETLIBRO Entity description"""

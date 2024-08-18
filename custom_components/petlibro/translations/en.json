@@ -22,6 +22,12 @@
         "sensor": {
             "remaining_desiccant": {
                 "name": "Desiccant remaining days"
+            },
+            "today_feeding_quantity": {
+                "name": "Today's feeding quantity"
+            },
+            "today_feeding_times": {
+                "name": "Today's feeding times"
             }
         }
     }

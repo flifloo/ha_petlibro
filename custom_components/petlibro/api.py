@@ -181,5 +181,9 @@ class PetLibroAPI:
         return await self.session.post_serial("/device/device/baseInfo", serial)  # type: ignore
 
     @relogin()
-    async def device_realInfo(self, serial: str) -> Dict[str, Any]:
+    async def device_real_info(self, serial: str) -> Dict[str, Any]:
         return await self.session.post_serial("/device/device/realInfo", serial)  # type: ignore
+
+    @relogin()
+    async def device_grain_status(self, serial: str) -> Dict[str, Any]:
+        return await self.session.post_serial("/device/data/grainStatus", serial)  # type: ignore
