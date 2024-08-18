@@ -2,7 +2,8 @@
 from logging import getLogger
 from hashlib import md5
 from urllib.parse import urljoin
-from typing import Any, Dict, List, TypeAlias
+from typing import Any, Dict, List, Optional, TypeAlias
+from functools import wraps
 
 from aiohttp import ClientSession
 
@@ -11,6 +12,20 @@ from .exceptions import PetLibroAPIError, PetLibroInvalidAuth, PetLibroLoginExpi
 
 JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
 _LOGGER = getLogger(__name__)
+
+
+def relogin():
+    """Auto-renew the API token if expired"""
+    def wrapper(func):
+        @wraps(func)
+        async def wrapped(self, *args, **kwargs):
+            try:
+                return await func(self, *args, **kwargs)
+            except PetLibroLoginExpired:
+                await self.login(self._email, self._password)
+                return await func(self, *args, **kwargs)
+        return wrapped
+    return wrapper
 
 
 class PetLibroSession:
@@ -75,6 +90,12 @@ class PetLibroSession:
         """Post on PetLibro API"""
         return await self.request("POST", path, **kwargs)
 
+    async def post_serial(self, path: str, serial: str, **kwargs: Any) -> JSON:
+        """Post on PetLibro API with device serial"""
+        return await self.request("POST", path, json={
+                "id": serial
+            }, **kwargs)
+
 
 class PetLibroAPI:
     """Placeholder class to make tests pass.
@@ -87,6 +108,9 @@ class PetLibroAPI:
     API_URLS = {
         "US": "https://api.us.petlibro.com"
     }
+    # Email and password for relogin
+    _email : Optional[str] = None
+    _password : Optional[str] = None
 
     def __init__(self, session: ClientSession, time_zone: str, region: str,
                  token: str | None = None) -> None:
@@ -131,6 +155,10 @@ class PetLibroAPI:
 
         self.session.token = data["token"]
 
+        # Save email and password to allow relogin
+        self._email = email
+        self._password = password
+
     async def logout(self):
         """
         Logout of the API
@@ -138,6 +166,7 @@ class PetLibroAPI:
         await self.session.post("/member/auth/logout")
         self.session.token = None
 
+    @relogin()
     async def list_devices(self) -> List[dict]:
         """
         List all account devices
@@ -147,13 +176,10 @@ class PetLibroAPI:
         """
         return await self.session.post("/device/device/list")  # type: ignore
 
+    @relogin()
     async def device_base_info(self, serial: str) -> Dict[str, Any]:
-        return await self.session.post("/device/device/baseInfo", json= {
-                "id": serial
-            })  # type: ignore
+        return await self.session.post_serial("/device/device/baseInfo", serial)  # type: ignore
 
+    @relogin()
     async def device_realInfo(self, serial: str) -> Dict[str, Any]:
-        return await self.session.post("/device/device/realInfo", json={
-                "id": serial
-            })  # type: ignore
-
+        return await self.session.post_serial("/device/device/realInfo", serial)  # type: ignore
