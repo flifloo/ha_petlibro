@@ -101,10 +101,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
         PetLibroSensorEntityDescription(
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
-            icon="mdi:package",
-            native_unit_of_measurement=UnitOfTime.DAYS,
-            device_class=SensorDeviceClass.DURATION,
-            state_class=SensorStateClass.MEASUREMENT
+            icon="mdi:package"
         ),
         PetLibroSensorEntityDescription(
             key="today_feeding_quantity",
