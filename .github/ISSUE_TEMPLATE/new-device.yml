@@ -1,0 +1,50 @@
+name: New device
+description: Suggest a non Tuya PETLIBRO device to add
+title: "[Device]: "
+labels: ["New device", "Triage"]
+assignees:
+  - flifloo
+body:
+  - type: markdown
+    attributes:
+      value: We need some information to help us integrate a new device to the integration
+  - type: input
+    id: model_name
+    attributes:
+      label: Device model name
+      placeholder: ex. Granary Feeder
+    validations:
+      required: true
+  - type: input
+    id: model_number
+    attributes:
+      label: Device model number
+      placeholder: ex. PLAF103
+    validations:
+      required: true
+  - type: dropdown
+    id: device_type
+    attributes:
+      label: Device type
+      options:
+        - Feeder
+        - Fountain
+        - Other
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What state, statistic or control do you want to be reported in the integration ?
+      placeholder: Tell us what you want !
+    validations:
+      required: true
+  - type: checkboxes
+    id: available_to_help
+    attributes:
+      label: Available to help integrate the new device
+      description: We can't buy all PETLIBRO devices, so we need you to get all the relevant information, this may need some technicals know how
+      options:
+        - label: I agree to help with the integration of the new device by providing the necessary information that will be requested
+          required: true
