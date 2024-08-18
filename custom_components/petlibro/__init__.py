@@ -3,6 +3,8 @@ from homeassistant.const import Platform
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.device_registry import DeviceEntry
 
+from custom_components.petlibro.devices.feeders.feeder import Feeder
+
 from .devices import Device
 from .devices.feeders.granary_feeder import GranaryFeeder
 from .const import DOMAIN
@@ -11,10 +13,12 @@ from .hub import PetLibroHub
 type PetLibroHubConfigEntry = ConfigEntry[PetLibroHub]
 
 PLATFORMS_BY_TYPE = {
-    Device: (
+    Feeder: (
+        Platform.SWITCH,
+    ),
+    GranaryFeeder: (
         Platform.SENSOR,
     ),
-    GranaryFeeder: set()
 }
 
 

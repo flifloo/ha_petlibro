@@ -29,6 +29,14 @@
             "today_feeding_times": {
                 "name": "Today's feeding times"
             }
+        },
+        "switch": {
+            "feeding_plan": {
+                "name": "Feeding plan"
+            },
+            "feeding_plan_today_all": {
+                "name": "Feeding plan today all"
+            }
         }
     }
 }

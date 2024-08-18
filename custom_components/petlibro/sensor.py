@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from logging import getLogger
 from collections.abc import Callable
 from datetime import datetime
@@ -11,7 +12,7 @@ from typing import Any, cast
 from homeassistant.components.sensor.const import SensorStateClass, SensorDeviceClass
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
-from homeassistant.const import UnitOfTime, UnitOfMass, UnitOfVolume
+from homeassistant.const import UnitOfMass, UnitOfVolume
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -19,7 +20,7 @@ from .devices import Device
 from .devices.feeders.feeder import Feeder
 from .devices.feeders.granary_feeder import GranaryFeeder
 from . import PetLibroHubConfigEntry
-from .entity import PetLibroEntity, PetLibroEntityDescription, _DeviceT
+from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 
 
 _LOGGER = getLogger(__name__)
@@ -36,34 +37,31 @@ def icon_for_gauge_level(gauge_level: int | None = None, offset: int = 0) -> str
     return "mdi:gauge-low"
 
 
-def unit_of_measurement_feeder(device: Device) -> str | None:
-    if isinstance(device, Feeder):
-        return device.unit_type
-    return None
+def unit_of_measurement_feeder(device: Feeder) -> str | None:
+    return device.unit_type
 
 
-def device_class_feeder(device: Device) -> SensorDeviceClass | None:
-    if isinstance(device, Feeder):
-        if device.unit_type in [UnitOfMass.OUNCES, UnitOfMass.GRAMS]:
-            return SensorDeviceClass.WEIGHT
-        if device.unit_type in ["cup", UnitOfVolume.MILLILITERS]:
-            return SensorDeviceClass.VOLUME
-    return None
+def device_class_feeder(device: Feeder) -> SensorDeviceClass | None:
+    if device.unit_type in [UnitOfMass.OUNCES, UnitOfMass.GRAMS]:
+        return SensorDeviceClass.WEIGHT
+    if device.unit_type in ["cup", UnitOfVolume.MILLILITERS]:
+        return SensorDeviceClass.VOLUME
 
 
-class PetLibroSensorEntityDescription(PetLibroEntityDescription, SensorEntityDescription, frozen_or_thawed=True):
+@dataclass(frozen=True)
+class PetLibroSensorEntityDescription(SensorEntityDescription, PetLibroEntityDescription[_DeviceT]):
     """A class that describes device sensor entities."""
 
     icon_fn: Callable[[Any], str | None] = lambda _: None
-    native_unit_of_measurement_fn: Callable[[Device], str | None] = lambda _: None
-    device_class_fn: Callable[[Device], SensorDeviceClass | None] = lambda _: None
-    should_report: Callable[[Device], bool] = lambda _: True
+    native_unit_of_measurement_fn: Callable[[_DeviceT], str | None] = lambda _: None
+    device_class_fn: Callable[[_DeviceT], SensorDeviceClass | None] = lambda _: None
+    should_report: Callable[[_DeviceT], bool] = lambda _: True
 
 
 class PetLibroSensorEntity(PetLibroEntity[_DeviceT], SensorEntity):  # type: ignore [reportIncompatibleVariableOverride]
     """PETLIBRO sensor entity."""
 
-    entity_description: PetLibroSensorEntityDescription  # type: ignore [reportIncompatibleVariableOverride]
+    entity_description: PetLibroSensorEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
     @cached_property
     def native_value(self) -> float | datetime | str | None:
@@ -98,12 +96,12 @@ class PetLibroSensorEntity(PetLibroEntity[_DeviceT], SensorEntity):  # type: ign
 
 DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
     GranaryFeeder: [
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[GranaryFeeder](
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
             icon="mdi:package"
         ),
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[GranaryFeeder](
             key="today_feeding_quantity",
             translation_key="today_feeding_quantity",
             icon="mdi:scale",
@@ -111,7 +109,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             device_class_fn=device_class_feeder,
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[GranaryFeeder](
             key="today_feeding_times",
             translation_key="today_feeding_times",
             icon="mdi:history",

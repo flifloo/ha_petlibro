@@ -187,3 +187,21 @@ class PetLibroAPI:
     @relogin()
     async def device_grain_status(self, serial: str) -> Dict[str, Any]:
         return await self.session.post_serial("/device/data/grainStatus", serial)  # type: ignore
+
+    @relogin()
+    async def device_feeding_plan_today_new(self, serial: str) -> Dict[str, Any]:
+        return await self.session.post_serial("/device/feedingPlan/todayNew", serial)  # type: ignore
+
+    @relogin()
+    async def set_device_feeding_plan(self, serial: str, enable: bool):
+        await self.session.post("/device/setting/updateFeedingPlanSwitch", json={
+            "deviceSn": serial,
+            "enable": enable
+        })
+
+    @relogin()
+    async def set_device_feeding_plan_today_all(self, serial: str, enable: bool):
+        return await self.session.post("/device/feedingPlan/enableTodayAll", json={
+            "deviceSn": serial,
+            "enable": enable
+        })

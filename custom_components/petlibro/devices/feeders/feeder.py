@@ -1,5 +1,5 @@
 """Generic PETLIBRO feeder"""
-from typing import Optional
+from typing import Optional, cast
 from . import Device
 
 
@@ -20,6 +20,12 @@ UNITS_RATIO = {
 class Feeder(Device):
     """Generic PETLIBRO feeder device"""
 
+    async def refresh(self):
+        await super().refresh()
+        self.update_data({
+            "feedingPlanTodayNew": await self.api.device_feeding_plan_today_new(self.serial)
+        })
+
     @property
     def unit_id(self) -> int | None:
         """The device unit type identifier"""
@@ -34,6 +40,22 @@ class Feeder(Device):
             unit = UNITS.get(unit_id)
 
         return unit
+
+    @property
+    def feeding_plan(self) -> bool:
+        return self._data.get("enableFeedingPlan", False)
+
+    async def set_feeding_plan(self, value: bool):
+        await self.api.set_device_feeding_plan(self.serial, value)
+        await self.refresh()
+
+    @property
+    def feeding_plan_today_all(self) -> bool:
+        return not cast(bool, self._data.get("feedingPlanTodayNew", {}).get("allSkipped"))
+
+    async def set_feeding_plan_today_all(self, value: bool):
+        await self.api.set_device_feeding_plan_today_all(self.serial, value)
+        await self.refresh()
 
     def convert_unit(self, value: int) -> int:
         """

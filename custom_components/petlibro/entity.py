@@ -25,7 +25,7 @@ class PetLibroEntity(
     _attr_has_entity_name = True
 
     def __init__(
-        self, device: _DeviceT, hub: PetLibroHub, description: PetLibroEntityDescription
+        self, device: _DeviceT, hub: PetLibroHub, description: PetLibroEntityDescription[_DeviceT]
     ) -> None:
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(hub.coordinator)
@@ -52,5 +52,5 @@ class PetLibroEntity(
         await super().async_added_to_hass()
         self.async_on_remove(self.device.on(EVENT_UPDATE, self.async_write_ha_state))
 
-class PetLibroEntityDescription(EntityDescription, frozen_or_thawed=True):
+class PetLibroEntityDescription(EntityDescription, Generic[_DeviceT]):
     """PETLIBRO Entity description"""
