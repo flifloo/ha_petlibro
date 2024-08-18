@@ -16,7 +16,11 @@ class GranaryFeeder(Feeder):
 
     @property
     def today_feeding_quantity(self) -> int:
-        return cast(int, self._data.get("grainStatus", {}).get("todayFeedingQuantity"))
+        quantity = self._data.get("grainStatus", {}).get("todayFeedingQuantity")
+        if not quantity:
+            return 0
+
+        return self.convert_unit(quantity)
 
     @property
     def today_feeding_times(self) -> int:
