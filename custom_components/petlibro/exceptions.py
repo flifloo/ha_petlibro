@@ -11,6 +11,3 @@ class PetLibroCannotConnect(PetLibroAPIError):
 
 class PetLibroInvalidAuth(PetLibroAPIError):
     """Error to indicate there is invalid auth."""
-
-class PetLibroLoginExpired(PetLibroAPIError):
-    """Error to indicate that the token has expired."""

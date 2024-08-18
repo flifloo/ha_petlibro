@@ -2,30 +2,16 @@
 from logging import getLogger
 from hashlib import md5
 from urllib.parse import urljoin
-from typing import Any, Dict, List, Optional, TypeAlias
-from functools import wraps
+from typing import Any, Dict, List, TypeAlias
 
 from aiohttp import ClientSession
+from homeassistant.exceptions import ConfigEntryAuthFailed
 
-from .exceptions import PetLibroAPIError, PetLibroInvalidAuth, PetLibroLoginExpired
+from .exceptions import PetLibroAPIError, PetLibroInvalidAuth
 
 
 JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
 _LOGGER = getLogger(__name__)
-
-
-def relogin():
-    """Auto-renew the API token if expired"""
-    def wrapper(func):
-        @wraps(func)
-        async def wrapped(self, *args, **kwargs):
-            try:
-                return await func(self, *args, **kwargs)
-            except PetLibroLoginExpired:
-                await self.login(self._email, self._password)
-                return await func(self, *args, **kwargs)
-        return wrapped
-    return wrapper
 
 
 class PetLibroSession:
@@ -78,7 +64,7 @@ class PetLibroSession:
                 raise PetLibroInvalidAuth()
 
             if data.get("code") == 1009:
-                raise PetLibroLoginExpired()
+                raise ConfigEntryAuthFailed(data.get("msg"))
 
             # Catch all other non 0 code
             if data.get("code") != 0:
@@ -108,9 +94,6 @@ class PetLibroAPI:
     API_URLS = {
         "US": "https://api.us.petlibro.com"
     }
-    # Email and password for relogin
-    _email : Optional[str] = None
-    _password : Optional[str] = None
 
     def __init__(self, session: ClientSession, time_zone: str, region: str,
                  token: str | None = None) -> None:
@@ -129,7 +112,7 @@ class PetLibroAPI:
         """
         return md5(password.encode("UTF-8")).hexdigest()
 
-    async def login(self, email: str, password: str):
+    async def login(self, email: str, password: str) -> str:
         """
         Login to the API
 
@@ -153,11 +136,7 @@ class PetLibroAPI:
         if not isinstance(data, dict) or "token" not in data or not isinstance(data["token"], str):
             raise PetLibroAPIError("No token")
 
-        self.session.token = data["token"]
-
-        # Save email and password to allow relogin
-        self._email = email
-        self._password = password
+        return data["token"]
 
     async def logout(self):
         """
@@ -166,7 +145,6 @@ class PetLibroAPI:
         await self.session.post("/member/auth/logout")
         self.session.token = None
 
-    @relogin()
     async def list_devices(self) -> List[dict]:
         """
         List all account devices
@@ -176,30 +154,24 @@ class PetLibroAPI:
         """
         return await self.session.post("/device/device/list")  # type: ignore
 
-    @relogin()
     async def device_base_info(self, serial: str) -> Dict[str, Any]:
         return await self.session.post_serial("/device/device/baseInfo", serial)  # type: ignore
 
-    @relogin()
     async def device_real_info(self, serial: str) -> Dict[str, Any]:
         return await self.session.post_serial("/device/device/realInfo", serial)  # type: ignore
 
-    @relogin()
     async def device_grain_status(self, serial: str) -> Dict[str, Any]:
         return await self.session.post_serial("/device/data/grainStatus", serial)  # type: ignore
 
-    @relogin()
     async def device_feeding_plan_today_new(self, serial: str) -> Dict[str, Any]:
         return await self.session.post_serial("/device/feedingPlan/todayNew", serial)  # type: ignore
 
-    @relogin()
     async def set_device_feeding_plan(self, serial: str, enable: bool):
         await self.session.post("/device/setting/updateFeedingPlanSwitch", json={
             "deviceSn": serial,
             "enable": enable
         })
 
-    @relogin()
     async def set_device_feeding_plan_today_all(self, serial: str, enable: bool):
         return await self.session.post("/device/feedingPlan/enableTodayAll", json={
             "deviceSn": serial,

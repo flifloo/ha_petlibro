@@ -5,7 +5,7 @@ from typing import List, Any, Optional
 from datetime import timedelta
 
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_REGION, CONF_EMAIL, CONF_PASSWORD
+from homeassistant.const import CONF_REGION, CONF_API_TOKEN
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from aiohttp import ClientResponseError, ClientConnectorError
@@ -29,7 +29,7 @@ class PetLibroHub:
         """Init the hub"""
         self._data = data
         self.session = None
-        self.api = PetLibroAPI(async_get_clientsession(hass), hass.config.time_zone, data[CONF_REGION])
+        self.api = PetLibroAPI(async_get_clientsession(hass), hass.config.time_zone, data[CONF_REGION], data[CONF_API_TOKEN])
 
         self.coordinator = DataUpdateCoordinator(
             hass,
@@ -38,13 +38,6 @@ class PetLibroHub:
             update_method=self.refresh_devices,
             update_interval=timedelta(seconds=UPDATE_INTERVAL_SECONDS),
         )
-
-    async def login(self):
-        self.api.session.token = None
-        await self.api.login(self._data[CONF_EMAIL], self._data[CONF_PASSWORD])
-
-    async def logout(self):
-        await self.api.logout()
 
     async def get_device(self, serial: str) -> Optional[Device]:
         """If found, return the device with the specified serial number."""

@@ -1,6 +1,7 @@
 from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.device_registry import DeviceEntry
 
 from custom_components.petlibro.devices.feeders.feeder import Feeder
@@ -36,8 +37,9 @@ def get_platforms_for_devices(devices: list[Device]) -> set[Platform]:
 async def async_setup_entry(hass: HomeAssistant, entry: PetLibroHubConfigEntry) -> bool:
     """Set up platform from a ConfigEntry."""
     hub = PetLibroHub(hass, entry.data)
-    await hub.login()
+
     await hub.load_devices()
+
     entry.runtime_data = hub
 
     if platforms := get_platforms_for_devices(hub.devices):
@@ -47,8 +49,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: PetLibroHubConfigEntry) 
 
 async def async_unload_entry(hass: HomeAssistant, entry: PetLibroHubConfigEntry) -> bool:
     """Unload a config entry."""
-    await entry.runtime_data.logout()
-
     platforms = get_platforms_for_devices(entry.runtime_data.devices)
     return await hass.config_entries.async_unload_platforms(entry, platforms)
 
