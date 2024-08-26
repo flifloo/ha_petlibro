@@ -141,7 +141,6 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             translation_key="today_eating_time",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING,
-            value_fn=lambda device: (_LOGGER.debug(f"Fetching today_eating_time: {device.today_eating_time}"), device.today_eating_time)[1]
         )
     ]
 }
