@@ -57,6 +57,10 @@ class Feeder(Device):
         await self.api.set_device_feeding_plan_today_all(self.serial, value)
         await self.refresh()
 
+    async def manual_feed(self, value: bool):
+        await self.api.manual_feed(self.serial, value)
+        await self.refresh()
+
     def convert_unit(self, value: int) -> int:
         """
         Convert a value to the device unit
