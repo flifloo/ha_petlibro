@@ -58,12 +58,11 @@ class Feeder(Device):
         await self.refresh()
 
     @property
-    def manual_feeding(self) -> bool:
-        return not cast(bool, self._data.get("manualFeeding", {}))
+    def manual_feeding(self) -> None:
+        return "Manual Feeding"
     
-    async def manual_feed(self, value: bool):
-        await self.api.manual_feed(self.serial, value)
-        await self.refresh()
+    async def manual_feed(self) -> None:
+        await self._device.manual_feed()
 
     def convert_unit(self, value: int) -> int:
         """
