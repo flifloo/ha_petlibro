@@ -32,7 +32,7 @@ class OneRFIDPetFeeder(Feeder):
     @property
     def today_eating_time(self) -> int:
         eating_time_str = self._data.get("grainStatus", {}).get("eatingTime", "0'0''")
-        _LOGGER.debug(f"eatingTime fetched as {eating_time_str} from {self._data}")
+        _LOGGER.debug(f"eatingTime fetched as {eating_time_str} from {self._data.get("grainStatus", {})}")
 
         if not eating_time_str:
             return 0
