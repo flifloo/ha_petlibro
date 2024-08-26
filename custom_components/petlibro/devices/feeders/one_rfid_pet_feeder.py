@@ -29,12 +29,21 @@ class OneRFIDPetFeeder(Feeder):
     def today_feeding_times(self) -> int:
         return cast(int, self._data.get("grainStatus", {}).get("todayFeedingTimes"))
 
-    @property
-    def today_eating_time(self) -> int:
-        eating_time_str = self._data.get("eatingTime", "0'0''")
-        _LOGGER.debug(f"eatingTime fetched as {eating_time_str} from {self._data}")
-        if not eating_time_str:
-            return 0
+@property
+def today_eating_time(self) -> int:
+    eating_time_str = self._data.get("eatingTime", "0'0''")
+    _LOGGER.debug(f"eatingTime fetched as {eating_time_str} from {self._data}")
+
+    if not eating_time_str:
+        return 0
+
+    try:
+        # Split the string into minutes and seconds and convert them to integers
         minutes, seconds = map(int, eating_time_str.replace("''", "").split("'"))
+        # Calculate the total time in seconds
         total_seconds = minutes * 60 + seconds
-        return total_seconds
+    except ValueError as e:
+        _LOGGER.error(f"Error parsing eatingTime '{eating_time_str}': {e}")
+        return 0
+
+    return total_seconds
