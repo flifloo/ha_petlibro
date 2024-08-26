@@ -139,6 +139,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
         PetLibroSensorEntityDescription[OneRFIDPetFeeder](            
             key="today_eating_time",
             translation_key="today_eating_time",
+            unit_of_measurement="s",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING,
         )

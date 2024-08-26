@@ -57,6 +57,10 @@ class Feeder(Device):
         await self.api.set_device_feeding_plan_today_all(self.serial, value)
         await self.refresh()
 
+    @property
+    def manual_feeding(self) -> bool:
+        return not cast(bool, self._data.get("manualFeeding", {}))
+    
     async def manual_feed(self, value: bool):
         await self.api.manual_feed(self.serial, value)
         await self.refresh()
