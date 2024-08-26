@@ -28,6 +28,4 @@ class OneRFIDPetFeeder(Feeder):
 
     @property
     def today_eating_time(self) -> int:
-        quantity = self._data.get("grainStatus", {}).get("eatingTime")
-        if not quantity:
-            return 0
+        return cast(int, self._data.get("grainStatus", {}).get("eatingTime"))
