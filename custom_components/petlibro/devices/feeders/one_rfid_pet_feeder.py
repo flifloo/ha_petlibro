@@ -31,5 +31,4 @@ class OneRFIDPetFeeder(Feeder):
         eating_time_str = self._data.get("eatingTime", "0'0''")
         minutes, seconds = map(int, eating_time_str.replace("''", "").split("'"))
         total_seconds = minutes * 60 + seconds
-        _LOGGER.debug(f"today_eating_time calculated as {total_seconds} seconds")
         return total_seconds
