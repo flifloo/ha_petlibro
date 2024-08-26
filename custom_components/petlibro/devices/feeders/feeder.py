@@ -57,12 +57,9 @@ class Feeder(Device):
         await self.api.set_device_feeding_plan_today_all(self.serial, value)
         await self.refresh()
 
-    @property
-    def manual_feeding(self) -> None:
-        return "Manual Feeding"
-    
     async def manual_feed(self) -> None:
-        await self._device.manual_feed()
+        """Trigger a manual feed."""
+        await self.api.manual_feed(self.serial)
 
     def convert_unit(self, value: int) -> int:
         """
