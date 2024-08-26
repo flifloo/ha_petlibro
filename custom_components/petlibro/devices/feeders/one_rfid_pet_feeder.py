@@ -29,6 +29,8 @@ class OneRFIDPetFeeder(Feeder):
     @property
     def today_eating_time(self) -> int:
         eating_time_str = self._data.get("eatingTime", "0'0''")
+        if not eating_time_str:
+            return 0
         minutes, seconds = map(int, eating_time_str.replace("''", "").split("'"))
         total_seconds = minutes * 60 + seconds
         return total_seconds
