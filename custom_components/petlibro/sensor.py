@@ -93,7 +93,7 @@ class PetLibroSensorEntity(PetLibroEntity[_DeviceT], SensorEntity):  # type: ign
         if (device_class := self.entity_description.device_class_fn(self.device)) is not None:
             return device_class
         return super().device_class
-
+_LOGGER.debug(f"Today eating time in seconds: {self.today_eating_time}")
 
 DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
     GranaryFeeder: [
