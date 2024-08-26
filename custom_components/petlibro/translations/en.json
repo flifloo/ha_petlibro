@@ -46,6 +46,9 @@
             },
             "feeding_plan_today_all": {
                 "name": "Feeding plan today all"
+            },
+            "manual_feed": {
+                "name": "Manual feed"
             }
         }
     }
