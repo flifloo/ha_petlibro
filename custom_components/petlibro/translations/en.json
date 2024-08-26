@@ -35,6 +35,9 @@
             },
             "today_feeding_times": {
                 "name": "Today's feeding times"
+            },
+            "today_eating_time": {
+                "name": "Today's eating time"
             }
         },
         "switch": {
