@@ -137,11 +137,11 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroSensorEntityDescription[OneRFIDPetFeeder](            
             key="today_eating_time",
             translation_key="today_eating_time",
             icon="mdi:history",
-            state_class=SensorStateClass.TOTAL_INCREASING
+            state_class=SensorStateClass.TOTAL_INCREASING,
             value_fn=lambda device: device.today_eating_time
         )
     ]
