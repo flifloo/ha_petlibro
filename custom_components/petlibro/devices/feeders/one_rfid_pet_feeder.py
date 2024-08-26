@@ -2,6 +2,9 @@ from typing import cast
 
 from .feeder import Feeder
 
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 class OneRFIDPetFeeder(Feeder):
     async def refresh(self):
@@ -34,3 +37,4 @@ class OneRFIDPetFeeder(Feeder):
         minutes, seconds = map(int, eating_time_str.replace("''", "").split("'"))
         total_seconds = minutes * 60 + seconds
         return total_seconds
+    _LOGGER.debug(f"eatingTime fetched as {eating_time_str} from {self._data}")
