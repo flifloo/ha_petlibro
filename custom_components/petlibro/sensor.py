@@ -93,16 +93,15 @@ class PetLibroSensorEntity(PetLibroEntity[_DeviceT], SensorEntity):  # type: ign
         if (device_class := self.entity_description.device_class_fn(self.device)) is not None:
             return device_class
         return super().device_class
-_LOGGER.debug(f"Today eating time in seconds: {self.today_eating_time}")
 
 DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
     GranaryFeeder: [
-        PetLibroSensorEntityDescription[GranaryFeeder](
+        PetLibroSensorEntityDescription(
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
             icon="mdi:package"
         ),
-        PetLibroSensorEntityDescription[GranaryFeeder](
+        PetLibroSensorEntityDescription(
             key="today_feeding_quantity",
             translation_key="today_feeding_quantity",
             icon="mdi:scale",
@@ -110,7 +109,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             device_class_fn=device_class_feeder,
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[GranaryFeeder](
+        PetLibroSensorEntityDescription(
             key="today_feeding_times",
             translation_key="today_feeding_times",
             icon="mdi:history",
@@ -118,12 +117,12 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
         )
     ],
     OneRFIDPetFeeder: [
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroSensorEntityDescription(
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
             icon="mdi:package"
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroSensorEntityDescription(
             key="today_feeding_quantity",
             translation_key="today_feeding_quantity",
             icon="mdi:scale",
@@ -131,13 +130,13 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             device_class_fn=device_class_feeder,
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroSensorEntityDescription(
             key="today_feeding_times",
             translation_key="today_feeding_times",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](            
+        PetLibroSensorEntityDescription(            
             key="today_eating_time",
             translation_key="today_eating_time",
             icon="mdi:history",
