@@ -96,12 +96,12 @@ class PetLibroSensorEntity(PetLibroEntity[_DeviceT], SensorEntity):  # type: ign
 
 DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
     GranaryFeeder: [
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[GranaryFeeder](
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
             icon="mdi:package"
         ),
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[GranaryFeeder](
             key="today_feeding_quantity",
             translation_key="today_feeding_quantity",
             icon="mdi:scale",
@@ -109,7 +109,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             device_class_fn=device_class_feeder,
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[GranaryFeeder](
             key="today_feeding_times",
             translation_key="today_feeding_times",
             icon="mdi:history",
@@ -117,12 +117,12 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
         )
     ],
     OneRFIDPetFeeder: [
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
             icon="mdi:package"
         ),
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
             key="today_feeding_quantity",
             translation_key="today_feeding_quantity",
             icon="mdi:scale",
@@ -130,13 +130,13 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             device_class_fn=device_class_feeder,
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription(
+        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
             key="today_feeding_times",
             translation_key="today_feeding_times",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription(            
+        PetLibroSensorEntityDescription[OneRFIDPetFeeder](            
             key="today_eating_time",
             translation_key="today_eating_time",
             icon="mdi:history",
@@ -145,7 +145,6 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
         )
     ]
 }
-
 
 async def async_setup_entry(
     _: HomeAssistant,
