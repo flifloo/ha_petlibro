@@ -142,7 +142,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             unit_of_measurement="s",
             icon="mdi:history",
             device_clas=SensorDeviceClass.DURATION,
-            state_class=SensorStateClass.TOTAL_INCREASING,
+            state_class=SensorStateClass.TOTAL_INCREASING
         )
     ]
 }
