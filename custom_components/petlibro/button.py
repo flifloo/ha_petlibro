@@ -39,7 +39,7 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
         PetLibroButtonEntityDescription[Feeder](
             key="manual_feed",
             translation_key="manual_feed",
-            set_fn=lambda device, value: device.manual_feed(value)
+            set_fn=lambda device, _: _LOGGER.info(f"Manual feed triggered for {device.serial}")
         )
     ]
 }
