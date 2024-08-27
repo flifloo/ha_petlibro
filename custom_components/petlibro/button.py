@@ -8,7 +8,11 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Any, Generic
 
-from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
+from homeassistant.components.button import (
+    ButtonDeviceClass,
+    ButtonEntity,
+    ButtonEntityDescription,
+)
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -24,8 +28,7 @@ _LOGGER = getLogger(__name__)
 class RequiredKeysMixin(Generic[_DeviceT]):
     """A class that describes devices button entity required keys."""
 
-    set_fn: Callable[[_DeviceT, bool], Coroutine[Any, Any, None]]
-
+    set_fn: Callable[[_DeviceT, int], bool] | None = None
 
 @dataclass(frozen=True)
 class PetLibroButtonEntityDescription(ButtonEntityDescription, PetLibroEntityDescription[_DeviceT], RequiredKeysMixin[_DeviceT]):
@@ -39,7 +42,8 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
         PetLibroButtonEntityDescription[Feeder](
             key="manual_feed",
             translation_key="manual_feed",
-            set_fn=lambda device, _: _LOGGER.info(f"Manual feed triggered for {device.serial}")
+            entity_category=EntityCategory.CONFIG,
+            set_fn=lambda device, _: device.manual_feed()
         )
     ]
 }
