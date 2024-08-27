@@ -74,19 +74,23 @@ class OneRFIDPetFeeder(Feeder):
     @property
     def door_state(self) -> bool:
         state = self._data.get("realInfo", {}).get("barnDoorState")
+        logger.ERROR(f"door_state: {state}")
         return bool(state)
     
     @property
     def food_dispenser_state(self) -> bool:
         state = self._data.get("realInfo", {}).get("grainOutletState")
+        logger.ERROR(f"food_dispenser_state: {state}")
         return not bool(state) 
 
     @property
     def door_blocked(self) -> bool:
         state = self._data.get("realInfo", {}).get("barnDoorError")
+        logger.ERROR(f"door_blocked: {state}")
         return bool(state) 
 
     @property
     def food_low(self) -> bool:
         state = self._data.get("realInfo", {}).get("surplusGrain")
+        logger.ERROR(f"food_low: {state}")
         return not bool(state)
