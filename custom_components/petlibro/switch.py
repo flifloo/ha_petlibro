@@ -58,22 +58,16 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
 
     entity_description: PetLibroSwitchEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
-    def __init__(self, *args, **kwargs):
-        """Initialize the switch entity."""
-        super().__init__(*args, **kwargs)
-
-        # Ensure manual_feed switch is off by default
-        if self.entity_description.key == "manual_feed":
-            self._initially_set_off()
-
-    def _initially_set_off(self):
-        """Set the manual_feed switch to off by default."""
-        asyncio.create_task(self.async_turn_off())
-
     @cached_property
     def is_on(self) -> bool | None:
         """Return true if switch is on."""
         return bool(getattr(self.device, self.entity_description.key))
+
+    async def async_added_to_hass(self) -> None:
+        """Handle entity which is added to Home Assistant."""
+        # Ensure manual_feed switch is off by default on startup
+        if self.entity_description.key == "manual_feed":
+            await self.async_turn_off()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the switch on."""
