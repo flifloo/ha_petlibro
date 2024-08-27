@@ -13,7 +13,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import PetLibroHubConfigEntry
-import asyncio
 from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from .devices.device import Device
 from .devices.feeders.feeder import Feeder
@@ -58,33 +57,14 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
 
     entity_description: PetLibroSwitchEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
-    def __init__(self, *args, **kwargs):
-        """Initialize the switch entity."""
-        super().__init__(*args, **kwargs)
-        self._force_off_on_startup = True  # Force manual_feed to off on startup
-
-    @property
+    @cached_property
     def is_on(self) -> bool | None:
         """Return true if switch is on."""
-        if self.entity_description.key == "manual_feed" and self._force_off_on_startup:
-            return False
         return bool(getattr(self.device, self.entity_description.key))
-
-    async def async_added_to_hass(self) -> None:
-        """Handle entity which is added to Home Assistant."""
-        # If this is the manual_feed switch, force it off on startup
-        if self.entity_description.key == "manual_feed":
-            await self.async_turn_off()
-        self._force_off_on_startup = False  # Clear the startup flag
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the switch on."""
         await self.entity_description.set_fn(self.device, True)
-
-        if self.entity_description.key == "manual_feed":
-            # Turn off the manual_feed switch after 5 seconds
-            await asyncio.sleep(5)
-            await self.async_turn_off()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the switch off."""

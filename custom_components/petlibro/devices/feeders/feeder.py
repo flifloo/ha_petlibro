@@ -59,7 +59,7 @@ class Feeder(Device):
 
     @property
     def manual_feed(self) -> bool:
-        return not cast(bool, self._data.get("manulFeeding", {}))
+        return not cast(bool, self._data.get("manulFeeding", False))
 
     async def set_manual_feed(self, value: bool):
         await self.api.set_device_manual_feeding(self.serial, value)
