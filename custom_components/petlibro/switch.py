@@ -58,9 +58,17 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
 
     entity_description: PetLibroSwitchEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
-    @cached_property
+    def __init__(self, *args, **kwargs):
+        """Initialize the switch entity."""
+        super().__init__(*args, **kwargs)
+        self._is_initializing = True  # Flag to identify first load
+
+    @property
     def is_on(self) -> bool | None:
         """Return true if switch is on."""
+        if self.entity_description.key == "manual_feed" and self._is_initializing:
+            # Force manual_feed to be off during initialization
+            return False
         return bool(getattr(self.device, self.entity_description.key))
 
     async def async_added_to_hass(self) -> None:
@@ -68,7 +76,8 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
         # Ensure manual_feed switch is off by default on startup
         if self.entity_description.key == "manual_feed":
             await self.async_turn_off()
-
+        self._is_initializing = False  # Clear the initialization flag
+    
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the switch on."""
         await self.entity_description.set_fn(self.device, True)
