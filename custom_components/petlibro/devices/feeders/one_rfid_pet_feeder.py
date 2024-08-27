@@ -8,7 +8,8 @@ class OneRFIDPetFeeder(Feeder):
     async def refresh(self):
         await super().refresh()
         self.update_data({
-            "grainStatus": await self.api.device_grain_status(self.serial)
+            "grainStatus": await self.api.device_grain_status(self.serial),
+            "realInfo": await self.api.device_real_info(self.serial)
         })
 
     @property
@@ -44,12 +45,6 @@ class OneRFIDPetFeeder(Feeder):
     @property
     def today_eating_times(self) -> int:
         return cast(int, self._data.get("grainStatus", {}).get("todayEatingTimes"))
-
-    async def refresh_real_info(self):
-        await super().refresh()
-        self.update_data({
-            "realInfo": await self.api.device_real_info(self.serial)
-        })
 
     @property
     def battery_state(self) -> str:
