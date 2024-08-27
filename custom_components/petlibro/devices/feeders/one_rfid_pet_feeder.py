@@ -40,3 +40,24 @@ class OneRFIDPetFeeder(Feeder):
             return 0
 
         return total_seconds
+    
+    @property
+    def today_eating_times(self) -> int:
+        return cast(int, self._data.get("grainStatus", {}).get("todayEatingTimes"))
+
+
+    @property
+    def battery_state(self) -> str:
+        return cast(str, self._data.get("realInfo", {}).get("batteryState"))
+    
+    @property
+    def door_state(self) -> int:
+        state = get("realInfo", {}).get("coverClosePosition")
+        if not state:
+            return "Unknown"
+        elif state == 4:
+            return "Closed"
+        elif state == 1:
+            return "Open"
+        else:
+            return "Unknown"

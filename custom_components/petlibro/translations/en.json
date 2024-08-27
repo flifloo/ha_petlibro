@@ -37,7 +37,16 @@
                 "name": "Today's feeding times"
             },
             "today_eating_time": {
-                "name": "Today's eating time"
+                "name": "Today's total eating time"
+            },
+            "today_eating_times": {
+                "name": "Today's eating times"
+            },
+            "door_state": {
+                "name": "Door state"
+            },
+            "battery_state": {
+                "name": "Battery level"
             }
         },
         "switch": {
