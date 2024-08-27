@@ -50,10 +50,6 @@ class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
 
     entity_description: PetLibroButtonEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
-    @cached_property
-    def press(self) -> None:
-        """Handle the button press."""
-
     async def async_press(self) -> None:
         await self.entity_description.set_fn(self._device, True)
         """Handle the button press."""
@@ -69,10 +65,10 @@ async def async_setup_entry(
         PetLibroButtonEntity(device, hub, description)
         for device in hub.devices
         for device_type, entity_descriptions in DEVICE_BUTTON_MAP.items()
-        if isinstance(device, device_type)
+        if _LOGGER.error(f"Checking device type: {type(device)} against {device_type}") or isinstance(device, device_type)
         for description in entity_descriptions
     ]
 
-    _LOGGER.info(f"Button entities to add: {entities}")
+    _LOGGER.error(f"Button entities to add: {entities}")
 
     async_add_entities(entities)
