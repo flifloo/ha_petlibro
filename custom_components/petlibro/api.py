@@ -178,9 +178,10 @@ class PetLibroAPI:
             "enable": enable
         })
 
-    async def set_device_manual_feeding(self, serial: str):
+    async def set_device_manual_feeding(self, serial: str, enable: bool):
         return await self.session.post("/device/device/manualFeeding", json={
             "deviceSn": serial,
             "grainNum": 1, # try and make this dynamic. add a number entity for the amount perhaps.
-            "requestId":"50ef5fdf9c8146bdba873934b1041200" # replace with real hashed md5 request id. we can probably just generate a random one each time.
+            "requestId":"50ef5fdf9c8146bdba873934b1041200", # replace with real hashed md5 request id. we can probably just generate a random one each time.
+            "enable": enable
         })
