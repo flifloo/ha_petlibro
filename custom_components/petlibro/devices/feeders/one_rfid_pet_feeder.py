@@ -4,12 +4,29 @@ from .feeder import Feeder
 import time
 import requests
 
+
+import logging
+
+# Configure the logger
+logging.basicConfig(level=logging.ERROR)  # Adjust the level as needed
+logger = logging.getLogger(__name__)
+
 class OneRFIDPetFeeder(Feeder):
     async def refresh(self):
         await super().refresh()
+        
+        # Fetch data from API
+        grain_status = await self.api.device_grain_status(self.serial)
+        real_info = await self.api.device_real_info(self.serial)
+        
+        # Debug logging
+        logger.debug(f"Fetched grain_status: {grain_status}")
+        logger.debug(f"Fetched real_info: {real_info}")
+
+        # Update internal data
         self.update_data({
-            "grainStatus": await self.api.device_grain_status(self.serial),
-            "realInfo": await self.api.device_real_info(self.serial)
+            "grainStatus": grain_status,
+            "realInfo": real_info
         })
 
     @property
