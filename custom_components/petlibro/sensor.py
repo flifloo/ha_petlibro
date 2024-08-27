@@ -154,11 +154,6 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             translation_key="battery_state",
             icon="mdi:battery-alert",
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](            
-            key="door_state",
-            translation_key="door_state",
-            icon="mdi:door",
-        )
     ]
 }
 
