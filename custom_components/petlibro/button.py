@@ -22,7 +22,7 @@ from .devices.feeders.feeder import Feeder
 class RequiredKeysMixin(Generic[_DeviceT]):
     """A class that describes devices button entity required keys."""
 
-    set_fn: Callable[[_DeviceT, bool], Coroutine[Any, Any, None]]
+    set_fn: Callable[[_DeviceT, str], Coroutine[Any, Any, None]]
 
 
 @dataclass(frozen=True)
