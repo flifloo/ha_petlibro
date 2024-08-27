@@ -19,8 +19,8 @@ class OneRFIDPetFeeder(Feeder):
         real_info = await self.api.device_real_info(self.serial)
         
         # Debug logging
-        logger.debug(f"Fetched grain_status: {grain_status}")
-        logger.debug(f"Fetched real_info: {real_info}")
+        _LOGGER.debug(f"Fetched grain_status: {grain_status}")
+        _LOGGER.debug(f"Fetched real_info: {real_info}")
 
         # Update internal data
         self.update_data({
@@ -72,24 +72,28 @@ class OneRFIDPetFeeder(Feeder):
     
     @property
     def door_state(self) -> bool:
+        _LOGGER.debug("door_state property accessed")
         state = self._data.get("realInfo", {}).get("barnDoorState")
         _LOGGER.debug(f"door_state: {state}")
         return bool(state)
     
     @property
     def food_dispenser_state(self) -> bool:
+        _LOGGER.debug("food_dispenser_state property accessed")
         state = self._data.get("realInfo", {}).get("grainOutletState")
         _LOGGER.debug(f"food_dispenser_state: {state}")
         return not bool(state) 
 
     @property
     def door_blocked(self) -> bool:
+        _LOGGER.debug("door_blocked property accessed")
         state = self._data.get("realInfo", {}).get("barnDoorError")
         _LOGGER.debug(f"door_blocked: {state}")
         return bool(state) 
 
     @property
     def food_low(self) -> bool:
+        _LOGGER.debug("food_low property accessed")
         state = self._data.get("realInfo", {}).get("surplusGrain")
         _LOGGER.debug(f"food_low: {state}")
         return not bool(state)
