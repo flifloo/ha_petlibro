@@ -58,7 +58,7 @@ class Feeder(Device):
         await self.refresh()
 
     @property
-    def manual_feedl(self) -> bool:
+    def manual_feed(self) -> bool:
         return not cast(bool, self._data.get("manulFeeding", {}))
 
     async def set_manual_feed(self, value: bool):
