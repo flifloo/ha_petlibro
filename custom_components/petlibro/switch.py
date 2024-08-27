@@ -61,23 +61,22 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
     def __init__(self, *args, **kwargs):
         """Initialize the switch entity."""
         super().__init__(*args, **kwargs)
-        self._is_initializing = True  # Flag to identify first load
+        self._force_off_on_startup = True  # Force manual_feed to off on startup
 
     @property
     def is_on(self) -> bool | None:
         """Return true if switch is on."""
-        if self.entity_description.key == "manual_feed" and self._is_initializing:
-            # Force manual_feed to be off during initialization
+        if self.entity_description.key == "manual_feed" and self._force_off_on_startup:
             return False
         return bool(getattr(self.device, self.entity_description.key))
 
     async def async_added_to_hass(self) -> None:
         """Handle entity which is added to Home Assistant."""
-        # Ensure manual_feed switch is off by default on startup
+        # If this is the manual_feed switch, force it off on startup
         if self.entity_description.key == "manual_feed":
             await self.async_turn_off()
-        self._is_initializing = False  # Clear the initialization flag
-    
+        self._force_off_on_startup = False  # Clear the startup flag
+
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the switch on."""
         await self.entity_description.set_fn(self.device, True)
