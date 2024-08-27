@@ -58,13 +58,12 @@ class Feeder(Device):
         await self.refresh()
 
     @property
-    def manual_feed_button(self) -> str:
-        """Return the button name."""
-        return "Manual Feeding"
-    
-    async def manual_feed(self) -> None:
-        """Trigger a manual feed."""
-        await self.api.set_device_manual_feeding(self.serial)
+    def manual_feedl(self) -> bool:
+        return not cast(bool, self._data.get("manulFeeding", {}))
+
+    async def set_manual_feed(self, value: bool):
+        await self.api.set_device_manual_feeding(self.serial, value)
+        await self.refresh()
 
     def convert_unit(self, value: int) -> int:
         """
