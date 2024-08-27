@@ -45,7 +45,7 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
             entity_category=EntityCategory.CONFIG,
             press_fn=lambda device, _: device.manual_feed()
         )
-    ]s
+    ]
 }
 
 
