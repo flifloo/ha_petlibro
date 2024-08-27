@@ -68,13 +68,47 @@ class OneRFIDPetFeeder(Feeder):
         return cast(str, self._data.get("realInfo", {}).get("batteryState"))
     
     @property
-    def door_state(self) -> int:
-        state = self._data.get("realInfo", {}).get("coverClosePosition")
+    def door_state(self) -> bool:
+        state = self._data.get("realInfo", {}).get("barnDoorState")
         if not state:
-            return "Unknown"
-        elif state == 4:
-            return "Closed"
-        elif state == 1:
-            return "Open"
+            return 0
+        elif state == "false":
+            return 0
+        elif state == "true":
+            return 1
         else:
-            return "Unknown"
+            return 0
+    
+    @property
+    def food_dispenser_state(self) -> bool:
+        state = self._data.get("realInfo", {}).get("grainOutletState")
+        if not state:
+            return 1
+        elif state == "false":
+            return 1
+        elif state == "true":
+            return 0
+        else:
+            return 1
+    
+    @property
+    def door_blocked(self) -> bool:
+        state = self._data.get("realInfo", {}).get("barnDoorError")
+        if not state:
+            return 1
+        elif state == "false":
+            return 1
+        elif state == "true":
+            return 0
+        else:
+            return 1
+
+    @property   
+    def food_low(self) -> bool:
+        state = self._data.get("realInfo", {}).get("surplusGrain")
+        if not state:
+            return 0
+        elif state == "true":
+            return 0
+        else:
+            return 1

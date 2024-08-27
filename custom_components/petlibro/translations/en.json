@@ -42,9 +42,6 @@
             "today_eating_times": {
                 "name": "Today's eating times"
             },
-            "door_state": {
-                "name": "Door state"
-            },
             "battery_state": {
                 "name": "Battery level"
             }
@@ -58,6 +55,20 @@
             },
             "manual_feed": {
                 "name": "Manual feed"
+            }
+        },
+        "binary_sensor": {
+            "door_state": {
+                "name": "Door state"
+            },
+            "food_dispenser_state": {
+                "name": "dispenser state"
+            },
+            "door_blocked": {
+                "name": "Door error state"
+            },
+            "food_low": {
+                "name": "Food low"
             }
         }
     }
