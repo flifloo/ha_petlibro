@@ -178,7 +178,7 @@ class PetLibroAPI:
             "enable": enable
         })
 
-    async def manual_feed(self, serial: str):
+    async def set_device_manual_feeding(self, serial: str, enable: bool):
         return await self.session.post("/device/device/manualFeeding", json={
             "deviceSn": serial,
             "grainNum": 1, # try and make this dynamic. add a number entity for the amount perhaps.

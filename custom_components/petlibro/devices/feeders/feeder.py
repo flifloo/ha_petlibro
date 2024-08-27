@@ -66,6 +66,14 @@ class Feeder(Device):
         """Return the button name."""
         return "Manual Feeding"
 
+    @property
+    def manual_feed(self) -> bool:
+        return not cast(bool, self._data.get("manualFeed", {}))
+
+    async def manual_feed(self, value: bool):
+        await self.api.set_device_manual_feeding(self.serial, value)
+        await self.refresh()
+
     def convert_unit(self, value: int) -> int:
         """
         Convert a value to the device unit
