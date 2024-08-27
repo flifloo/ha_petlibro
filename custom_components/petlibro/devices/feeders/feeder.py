@@ -58,7 +58,7 @@ class Feeder(Device):
         await self.refresh()
 
     @property
-    def manual_feed(self) -> str:
+    def manual_feed_button(self) -> str:
         """Return the button name."""
         return "Manual Feeding"
     
