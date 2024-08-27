@@ -1,24 +1,55 @@
-from homeassistant.components.button import ButtonEntity
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+"""Support for PETLIBRO buttons."""
+
+from __future__ import annotations
+
+from collections.abc import Callable, Coroutine
+from dataclasses import dataclass
+from functools import cached_property
+from typing import Any, Generic
+
+from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.const import EntityCategory
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .devices.feeders.feeder import Feeder
 from . import PetLibroHubConfigEntry
+from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
+from .devices.device import Device
+from .devices.feeders.feeder import Feeder
 
 
-class ManualFeedingButton(ButtonEntity):
-    """PETLIBRO Manual Feeding button entity."""
+@dataclass(frozen=True)
+class RequiredKeysMixin(Generic[_DeviceT]):
+    """A class that describes devices button entity required keys."""
 
-    def __init__(self, device: Feeder):
-        self._device = device
-        self._attr_name = "Manual Feeding"
-        self._attr_unique_id = f"{device.serial}_manual_feeding"
-        self._attr_entity_category = EntityCategory.CONFIG
+    set_fn: Callable[[_DeviceT, bool], Coroutine[Any, Any, None]]
+
+
+@dataclass(frozen=True)
+class PetLibroButtonEntityDescription(ButtonEntityDescription, PetLibroEntityDescription[_DeviceT], RequiredKeysMixin[_DeviceT]):
+    """A class that describes device button entities."""
+
+    entity_category: EntityCategory = EntityCategory.CONFIG
+
+
+DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
+    Feeder: [
+        PetLibroButtonEntityDescription[Feeder](
+            key="manual_feed",
+            translation_key="manual_feed",
+            set_fn=lambda device, value: device.manual_feed(value)
+        ),
+    ]
+}
+
+class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
+    """PETLIBRO button entity."""
+
+    entity_description: PetLibroButtonEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
     async def async_press(self) -> None:
         """Handle the button press."""
-        await self._device.manual_feed()
-
+        await self.device.manual_feed()
 
 async def async_setup_entry(
     _: HomeAssistant,
@@ -28,8 +59,10 @@ async def async_setup_entry(
     """Set up PETLIBRO button using config entry."""
     hub = entry.runtime_data
     entities = [
-        ManualFeedingButton(device)
+        PetLibroButtonEntity(device, hub, description)
         for device in hub.devices
-        if isinstance(device, Feeder)
+        for device_type, entity_descriptions in DEVICE_BUTTON_MAP.items()
+        if isinstance(device, device_type)
+        for description in entity_descriptions
     ]
     async_add_entities(entities)
