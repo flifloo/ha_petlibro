@@ -57,22 +57,14 @@ class Feeder(Device):
         await self.api.set_device_feeding_plan_today_all(self.serial, value)
         await self.refresh()
 
-    async def manual_feed(self) -> None:
-        """Trigger a manual feed."""
-        await self.api.manual_feed(self.serial)
-
     @property
-    def manual_feeding(self) -> str:
+    def manual_feed(self) -> str:
         """Return the button name."""
         return "Manual Feeding"
-
-    @property
-    def manual_feed(self) -> bool:
-        return not cast(bool, self._data.get("manualFeed", {}))
-
-    async def manual_feed(self, value: bool):
-        await self.api.set_device_manual_feeding(self.serial, value)
-        await self.refresh()
+    
+    async def manual_feed(self) -> None:
+        """Trigger a manual feed."""
+        await self.api.set_device_manual_feeding(self.serial)
 
     def convert_unit(self, value: int) -> int:
         """
