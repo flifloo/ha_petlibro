@@ -57,7 +57,7 @@ class OneRFIDPetFeeder(Feeder):
     
     @property
     def door_state(self) -> int:
-        state = get("realInfo", {}).get("coverClosePosition")
+        state = self._data.get("realInfo", {}).get("coverClosePosition")
         if not state:
             return "Unknown"
         elif state == 4:
