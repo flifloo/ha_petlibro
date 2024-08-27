@@ -61,7 +61,11 @@ class OneRFIDPetFeeder(Feeder):
     
     @property
     def today_eating_times(self) -> int:
-        return cast(int, self._data.get("grainStatus", {}).get("todayEatingTimes"))
+        quantity = self._data.get("grainStatus", {}).get("todayEatingTimes")
+        if not quantity:
+            return 0
+
+        return quantity
 
     @property
     def battery_state(self) -> str:
@@ -72,9 +76,9 @@ class OneRFIDPetFeeder(Feeder):
         state = self._data.get("realInfo", {}).get("barnDoorState")
         if not state:
             return 0
-        elif state == "false":
+        elif state == "False":
             return 0
-        elif state == "true":
+        elif state == "True":
             return 1
         else:
             return 0
@@ -84,9 +88,9 @@ class OneRFIDPetFeeder(Feeder):
         state = self._data.get("realInfo", {}).get("grainOutletState")
         if not state:
             return 1
-        elif state == "false":
+        elif state == "False":
             return 1
-        elif state == "true":
+        elif state == "True":
             return 0
         else:
             return 1
@@ -96,9 +100,9 @@ class OneRFIDPetFeeder(Feeder):
         state = self._data.get("realInfo", {}).get("barnDoorError")
         if not state:
             return 1
-        elif state == "false":
+        elif state == "False":
             return 1
-        elif state == "true":
+        elif state == "True":
             return 0
         else:
             return 1
@@ -108,7 +112,7 @@ class OneRFIDPetFeeder(Feeder):
         state = self._data.get("realInfo", {}).get("surplusGrain")
         if not state:
             return 0
-        elif state == "true":
+        elif state == "True":
             return 0
         else:
             return 1
