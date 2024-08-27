@@ -21,6 +21,7 @@ PLATFORMS_BY_TYPE = {
     ),
     GranaryFeeder: (
         Platform.SENSOR,
+        Platform.BINARY_SENSOR,
     ),
     OneRFIDPetFeeder: (
         Platform.SENSOR,
