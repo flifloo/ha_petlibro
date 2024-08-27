@@ -11,6 +11,11 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 class OneRFIDPetFeeder(Feeder):
+    _LOGGER.error("OneRFIDPetFeeder class is being loaded")
+    def log_test():
+        _LOGGER.error("Logging test successful")
+
+    log_test()
     async def refresh(self):
         await super().refresh()
         
