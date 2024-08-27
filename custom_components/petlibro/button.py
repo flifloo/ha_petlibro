@@ -53,6 +53,9 @@ class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
     """PETLIBRO button entity."""
 
     entity_description: PetLibroButtonEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
+    _LOGGER.error(f"Button entities to add: {_DeviceT}")
+    def press(self) -> None:
+        """Handle the button press."""
 
     async def async_press(self) -> None:
         await self.entity_description.press_fn(self._device, True)
