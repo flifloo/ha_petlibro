@@ -1,6 +1,7 @@
 """Support for PETLIBRO buttons."""
 
 from __future__ import annotations
+from logging import getLogger
 
 from collections.abc import Callable, Coroutine
 from dataclasses import dataclass
@@ -17,6 +18,7 @@ from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from .devices.device import Device
 from .devices.feeders.feeder import Feeder
 
+_LOGGER = getLogger(__name__)
 
 @dataclass(frozen=True)
 class RequiredKeysMixin(Generic[_DeviceT]):
@@ -53,6 +55,7 @@ class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
         """Handle the button press."""
 
     async def async_press(self) -> None:
+        await self.entity_description.set_fn(self._device, True)
         """Handle the button press."""
 
 async def async_setup_entry(
@@ -69,4 +72,7 @@ async def async_setup_entry(
         if isinstance(device, device_type)
         for description in entity_descriptions
     ]
+
+    _LOGGER.info(f"Button entities to add: {entities}")
+
     async_add_entities(entities)
