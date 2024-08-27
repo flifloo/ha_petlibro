@@ -28,7 +28,7 @@ _LOGGER = getLogger(__name__)
 class RequiredKeysMixin(Generic[_DeviceT]):
     """A class that describes devices button entity required keys."""
 
-    set_fn: Callable[[_DeviceT, int], bool] | None = None
+    press_fn: Callable[[_DeviceT, int], bool] | None = None
 
 @dataclass(frozen=True)
 class PetLibroButtonEntityDescription(ButtonEntityDescription, PetLibroEntityDescription[_DeviceT], RequiredKeysMixin[_DeviceT]):
@@ -43,9 +43,9 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
             key="manual_feed",
             translation_key="manual_feed",
             entity_category=EntityCategory.CONFIG,
-            set_fn=lambda device, _: device.manual_feed()
+            press_fn=lambda device, _: device.manual_feed()
         )
-    ]
+    ]s
 }
 
 
@@ -55,7 +55,7 @@ class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
     entity_description: PetLibroButtonEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
     async def async_press(self) -> None:
-        await self.entity_description.set_fn(self._device, True)
+        await self.entity_description.press_fn(self._device, True)
         """Handle the button press."""
 
 async def async_setup_entry(
