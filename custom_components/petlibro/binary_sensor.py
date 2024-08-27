@@ -10,7 +10,7 @@ from functools import cached_property
 from typing import Any, cast
 from typing import Optional
 
-from homeassistant.components.binary_sensor import BinarySensorEntity, BinarySensorEntityDescription, BinarySensorDeviceClass, BinarySensorStateClass
+from homeassistant.components.binary_sensor import BinarySensorEntity, BinarySensorEntityDescription, BinarySensorDeviceClass
 from homeassistant.const import UnitOfMass, UnitOfVolume
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
