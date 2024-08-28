@@ -11,13 +11,9 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 class OneRFIDPetFeeder(Feeder):
-    _LOGGER.error("OneRFIDPetFeeder class is being loaded")
-    def log_test():
-        _LOGGER.error("Logging test successful")
-
-    log_test()
-    async def refresh(self):
-        await super().refresh()
+    def __init__(self):
+        super().__init__()
+        _LOGGER.error("OneRFIDPetFeeder initialized")
         
         # Fetch data from API
         grain_status = await self.api.device_grain_status(self.serial)
@@ -77,28 +73,20 @@ class OneRFIDPetFeeder(Feeder):
     
     @property
     def door_state(self) -> bool:
-        _LOGGER.error("door_state property accessed")
         state = self._data.get("realInfo", {}).get("barnDoorState")
-        _LOGGER.error(f"door_state: {state}")
-        return bool(state)
-    
+        return state is True
+
     @property
     def food_dispenser_state(self) -> bool:
-        _LOGGER.error("food_dispenser_state property accessed")
         state = self._data.get("realInfo", {}).get("grainOutletState")
-        _LOGGER.error(f"food_dispenser_state: {state}")
-        return not bool(state) 
+        return state is False
 
     @property
     def door_blocked(self) -> bool:
-        _LOGGER.error("door_blocked property accessed")
         state = self._data.get("realInfo", {}).get("barnDoorError")
-        _LOGGER.error(f"door_blocked: {state}")
-        return bool(state) 
+        return state is True
 
     @property
     def food_low(self) -> bool:
-        _LOGGER.error("food_low property accessed")
         state = self._data.get("realInfo", {}).get("surplusGrain")
-        _LOGGER.error(f"food_low: {state}")
-        return not bool(state)
+        return state is False
