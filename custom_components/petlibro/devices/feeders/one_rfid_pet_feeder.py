@@ -10,24 +10,20 @@ import logging
 # Configure the logger
 _LOGGER = logging.getLogger(__name__)
 
-class OneRFIDPetFeeder(Feeder):
-    def __init__(self):
-        super().__init__()
-        _LOGGER.error("OneRFIDPetFeeder initialized")
-        
-        # Fetch data from API
-        grain_status = await self.api.device_grain_status(self.serial)
-        real_info = await self.api.device_real_info(self.serial)
-        
-        # Debug logging
-        _LOGGER.error(f"Fetched grain_status: {grain_status}")
-        _LOGGER.error(f"Fetched real_info: {real_info}")
+class OneRFIDPetFeeder(Feeder):   
+    # Fetch data from API
+    grain_status = await self.api.device_grain_status(self.serial)
+    real_info = await self.api.device_real_info(self.serial)
+    
+    # Debug logging
+    _LOGGER.error(f"Fetched grain_status: {grain_status}")
+    _LOGGER.error(f"Fetched real_info: {real_info}")
 
-        # Update internal data
-        self.update_data({
-            "grainStatus": grain_status,
-            "realInfo": real_info
-        })
+    # Update internal data
+    self.update_data({
+        "grainStatus": grain_status,
+        "realInfo": real_info
+    })
 
     @property
     def remaining_desiccant(self) -> str:
