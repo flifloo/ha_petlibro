@@ -77,7 +77,7 @@ def generate_feeding_plan_switches(device: Feeder) -> List[PetLibroSwitchEntityD
     """Generate switch descriptions for each feeding plan."""
     switches = []
 
-    feeding_plans = device.feeding_plan_today_new.get("plans", [])
+    feeding_plans = device.feeding_plans.get("plans", [])
     for plan in feeding_plans:
         plan_id = plan["planId"]
         time = plan["time"]
