@@ -78,7 +78,7 @@ class Feeder(Device):
 
 
     @property
-    def feeding_plans(self) -> list[dict[str, Any]]:
+    def feeding_plans(self) -> list[dict[str, any]]:
         """Return the list of feeding plans for today."""
         return self._data.get("feedingPlanTodayNew", {}).get("plans", [])
     
