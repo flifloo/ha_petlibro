@@ -64,20 +64,25 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
         if isinstance(self.device, OneRFIDPetFeeder):
             feeder = cast(OneRFIDPetFeeder, self.device)
             
-            # Mapping entity descriptions to corresponding feeder properties
+            # Create a dictionary mapping sensor keys to corresponding device properties
             sensor_key_to_property = {
                 "door_state": feeder.door_state,
                 "food_dispenser_state": feeder.food_dispenser_state,
-                "door_error_state": feeder.door_blocked,
+                "door_blocked": feeder.door_blocked,
                 "food_low": feeder.food_low
             }
             
-            # Retrieve the state based on the entity description key
-            state_property = sensor_key_to_property.get(self.entity_description.key)
-            if state_property is not None:
-                return state_property
+            # Get the property corresponding to the current entity description key
+            state_property_fn = sensor_key_to_property.get(self.entity_description.key)
             
-        # Default to False if key not found or device type is not matched
+            if state_property_fn is not None:
+                state = state_property_fn
+                _LOGGER.error(f"Fetching state for key '{self.entity_description.key}': {state}")
+                return state
+            
+            _LOGGER.error(f"Key '{self.entity_description.key}' not found in sensor_key_to_property.")
+        
+        _LOGGER.error("Device is not of type OneRFIDPetFeeder or no matching key found.")
         return False
 
 DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDescription]] = {
@@ -106,7 +111,7 @@ DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDesc
             key="food_low",
             translation_key="food_low",
             icon="mdi:bowl-mix-outline",
-            device_class=BinarySensorDeviceClass.SAFETY
+            device_class=BinarySensorDeviceClass.PROBLEM
         )
     ]
 }
