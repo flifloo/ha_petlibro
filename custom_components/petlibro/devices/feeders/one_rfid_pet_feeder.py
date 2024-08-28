@@ -11,6 +11,8 @@ class OneRFIDPetFeeder(Feeder):
     async def refresh(self):
         await super().refresh()
         
+        _LOGGER.error("Refreshing device data...")
+
         # Fetch data from API
         grain_status = await self.api.device_grain_status(self.serial)
         real_info = await self.api.device_real_info(self.serial)
