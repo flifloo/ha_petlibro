@@ -21,7 +21,7 @@ class OneRFIDPetFeeder(Feeder):
             "realInfo": real_info
         })
 
-    _LOGGER.error(f"Final _data structure: {self._data}")
+        _LOGGER.error(f"Final _data structure: {self._data}")
 
     @property
     def remaining_desiccant(self) -> str:
