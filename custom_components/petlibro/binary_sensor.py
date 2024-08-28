@@ -68,7 +68,7 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
             sensor_key_to_property = {
                 "door_state": feeder.door_state,
                 "food_dispenser_state": feeder.food_dispenser_state,
-                "door_blocked": feeder.door_blocked,
+                "door_error_state": feeder.door_blocked,
                 "food_low": feeder.food_low
             }
             
@@ -88,7 +88,7 @@ DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDesc
             key="door_state",
             translation_key="door_state",
             icon="mdi:door",
-            device_class=BinarySensorDeviceClass.DOOR
+            device_class=BinarySensorDeviceClass.OPENING
         ),
         PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
             key="food_dispenser_state",
@@ -106,7 +106,7 @@ DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDesc
             key="food_low",
             translation_key="food_low",
             icon="mdi:bowl-mix-outline",
-            device_class=BinarySensorDeviceClass.PROBLEM
+            device_class=BinarySensorDeviceClass.SAFETY
         )
     ]
 }

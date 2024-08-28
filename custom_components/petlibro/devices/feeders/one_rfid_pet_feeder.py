@@ -71,35 +71,25 @@ class OneRFIDPetFeeder(Feeder):
         return cast(str, self._data.get("realInfo", {}).get("batteryState"))
     
     @property
-    def door_state(self) -> bool:
+    def food_dispenser_state(self) -> bool:
         # Accessing the realInfo section from _data
-        _LOGGER.error(f"Current _data structure: {self._data}")
-        real_info = self._data.get("realInfo", {})
-        _LOGGER.error(f"Real info for door_state: {real_info}")
-        state = bool(real_info.get("barnDoorState", False))
-        _LOGGER.error(f"door_state: {state}")
+        state = bool(self._data.get("realInfo", {}).get("barnDoorState"))
         return state
 
     @property
     def food_dispenser_state(self) -> bool:
         # Accessing the realInfo section from _data
-        real_info = self._data.get("realInfo", {})
-        state = bool(real_info.get("grainOutletState", False))
-        _LOGGER.error(f"food_dispenser_state: {state}")
+        state = bool(self._data.get("realInfo", {}).get("grainOutletState"))
         return state
-
+    
     @property
     def door_blocked(self) -> bool:
         # Accessing the realInfo section from _data
-        real_info = self._data.get("realInfo", {})
-        state = bool(real_info.get("barnDoorError", False))
-        _LOGGER.error(f"door_blocked: {state}")
+        state = bool(self._data.get("realInfo", {}).get("barnDoorError"))
         return state
 
     @property
     def food_low(self) -> bool:
         # Accessing the realInfo section from _data
-        real_info = self._data.get("realInfo", {})
-        state = bool(real_info.get("surplusGrain", False))
-        _LOGGER.error(f"food_low: {state}")
+        state = bool(self._data.get("realInfo", {}).get("surplusGrain"))
         return state
