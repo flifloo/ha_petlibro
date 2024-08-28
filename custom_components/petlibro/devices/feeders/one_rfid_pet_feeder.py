@@ -71,7 +71,7 @@ class OneRFIDPetFeeder(Feeder):
 
     @property
     def food_dispenser_state(self) -> bool:
-        # inverting to reflect correct state. reports true when no problem, we want off for the device class if no problem detected.
+        # Accessing the realInfo section from _data
         state = not bool(self._data.get("realInfo", {}).get("grainOutletState"))
         return state
     
@@ -83,6 +83,6 @@ class OneRFIDPetFeeder(Feeder):
 
     @property
     def food_low(self) -> bool:
-        # inverting to reflect correct state. reports true when no problem, we want off for the device class if no problem detected.
+        # Accessing the realInfo section from _data
         state = not bool(self._data.get("realInfo", {}).get("surplusGrain"))
         return state
