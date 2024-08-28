@@ -57,6 +57,7 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
     
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""
+        _LOGGER.error(f"Calling async_update for {self.entity_description.key}")
         self._state = await self._fetch_state_from_device()
 
     async def _fetch_state_from_device(self) -> bool:
