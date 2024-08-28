@@ -1,7 +1,6 @@
 """Generic PETLIBRO feeder"""
-from typing import Optional, cast
+from typing import Any, Optional, cast
 from . import Device
-
 
 UNITS = {
     1: "cup",
@@ -75,3 +74,18 @@ class Feeder(Device):
         if self.unit_id:
             return value * UNITS_RATIO.get(self.unit_id, 1)
         return value
+
+
+    @property
+    def feeding_plans(self) -> list[dict[str, Any]]:
+        """Return the list of feeding plans for today."""
+        return self._data.get("feedingPlanTodayNew", {}).get("plans", [])
+    
+    async def set_feeding_plan_state(self, plan_id: int, enabled: bool):
+        """Set the state of a specific feeding plan by ID."""
+        for plan in self.feeding_plans:
+            if plan["planId"] == plan_id:
+                plan["state"] = 1 if enabled else 3
+                await self.api.set_device_feeding_plan_today_all(self.serial, enabled)
+                await self.refresh()
+                break
