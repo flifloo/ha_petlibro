@@ -10,23 +10,16 @@ _LOGGER = getLogger(__name__)
 class OneRFIDPetFeeder(Feeder):   
     async def refresh(self):
         await super().refresh()
-        
-        _LOGGER.error("Refreshing device data...")
 
         # Fetch data from API
         grain_status = await self.api.device_grain_status(self.serial)
         real_info = await self.api.device_real_info(self.serial)
-
-        _LOGGER.error(f"Grain Status API Response: {grain_status}")
-        _LOGGER.error(f"Real Info API Response: {real_info}")
 
         # Update internal data
         self.update_data({
             "grainStatus": grain_status,
             "realInfo": real_info
         })
-
-        _LOGGER.error(f"Final _data structure: {self._data}")
 
     @property
     def remaining_desiccant(self) -> str:

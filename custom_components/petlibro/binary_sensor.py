@@ -61,6 +61,7 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
 
     async def _fetch_state_from_device(self) -> bool:
         """Fetch the state from the actual device based on the sensor key."""
+        _LOGGER.error("Entering _fetch_state_from_device method")
         if isinstance(self.device, OneRFIDPetFeeder):
             feeder = cast(OneRFIDPetFeeder, self.device)
             
