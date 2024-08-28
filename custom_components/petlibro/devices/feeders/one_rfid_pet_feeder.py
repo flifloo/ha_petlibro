@@ -64,7 +64,7 @@ class OneRFIDPetFeeder(Feeder):
         return cast(str, self._data.get("realInfo", {}).get("batteryState"))
     
     @property
-    def food_dispenser_state(self) -> bool:
+    def door_state(self) -> bool:
         # Accessing the realInfo section from _data
         state = bool(self._data.get("realInfo", {}).get("barnDoorState"))
         return state
@@ -72,7 +72,7 @@ class OneRFIDPetFeeder(Feeder):
     @property
     def food_dispenser_state(self) -> bool:
         # Accessing the realInfo section from _data
-        state = bool(self._data.get("realInfo", {}).get("grainOutletState"))
+        state = not bool(self._data.get("realInfo", {}).get("grainOutletState"))
         return state
     
     @property
@@ -84,5 +84,5 @@ class OneRFIDPetFeeder(Feeder):
     @property
     def food_low(self) -> bool:
         # Accessing the realInfo section from _data
-        state = bool(self._data.get("realInfo", {}).get("surplusGrain"))
+        state = not bool(self._data.get("realInfo", {}).get("surplusGrain"))
         return state
