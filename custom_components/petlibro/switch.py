@@ -70,6 +70,24 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
         """Turn the switch off."""
         await self.entity_description.set_fn(self.device, False)
 
+def generate_feeding_plan_switches(device: Feeder) -> List[PetLibroSwitchEntityDescription[Feeder]]:
+    """Generate switch descriptions for each feeding plan."""
+    switches = []
+
+    feeding_plans = device.feeding_plan_today_new.get("plans", [])
+    for plan in feeding_plans:
+        plan_id = plan["planId"]
+        time = plan["time"]
+
+        switch_description = PetLibroSwitchEntityDescription[Feeder](
+            key=f"daily_feeding_plan_{plan_id}",
+            name=f"Feeding Plan {time}",
+            translation_key=f"daily_feeding_plan_{plan_id}",  # Assuming dynamic translation if needed
+            set_fn=lambda dev, value, plan_id=plan_id: dev.set_feeding_plan_state(plan_id, value)
+        )
+        switches.append(switch_description)
+
+    return switches
 
 async def async_setup_entry(
     _: HomeAssistant,
@@ -78,11 +96,21 @@ async def async_setup_entry(
 ) -> None:
     """Set up PETLIBRO switches using config entry."""
     hub = entry.runtime_data
-    entities = [
-        PetLibroSwitchEntity(device, hub, description)
-        for device in hub.devices
-        for device_type, entity_descriptions in DEVICE_SWITCH_MAP.items()
-        if isinstance(device, device_type)
-        for description in entity_descriptions
-    ]
+    entities = []
+
+    for device in hub.devices:
+        # Add statically defined switches
+        for device_type, entity_descriptions in DEVICE_SWITCH_MAP.items():
+            if isinstance(device, device_type):
+                for description in entity_descriptions:
+                    entity = PetLibroSwitchEntity(device, hub, description)
+                    entities.append(entity)
+
+        # Add dynamically generated feeding plan switches for Feeder devices
+        if isinstance(device, Feeder):
+            feeding_plan_switches = generate_feeding_plan_switches(device)
+            for description in feeding_plan_switches:
+                entity = PetLibroSwitchEntity(device, hub, description)
+                entities.append(entity)
+
     async_add_entities(entities)
