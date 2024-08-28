@@ -1,7 +1,6 @@
 """Generic PETLIBRO feeder"""
-from typing import Optional, cast
+from typing import Any, Optional, cast
 from . import Device
-
 
 UNITS = {
     1: "cup",
@@ -78,7 +77,7 @@ class Feeder(Device):
 
 
     @property
-    def feeding_plans(self) -> list[dict[str, any]]:
+    def feeding_plans(self) -> list[dict[str, Any]]:
         """Return the list of feeding plans for today."""
         return self._data.get("feedingPlanTodayNew", {}).get("plans", [])
     
