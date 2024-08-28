@@ -15,6 +15,9 @@ class OneRFIDPetFeeder(Feeder):
         grain_status = await self.api.device_grain_status(self.serial)
         real_info = await self.api.device_real_info(self.serial)
 
+        _LOGGER.error(f"Grain Status API Response: {grain_status}")
+        _LOGGER.error(f"Real Info API Response: {real_info}")
+
         # Update internal data
         self.update_data({
             "grainStatus": grain_status,
@@ -67,16 +70,24 @@ class OneRFIDPetFeeder(Feeder):
     
     @property
     def door_state(self) -> bool:
-        return bool (self._data.get("realInfo", {}).get("barnDoorState", False))
+        state = bool(self._data.get("realInfo", {}).get("barnDoorState", False))
+        _LOGGER.error(f"door_state: {state}")
+        return state
+
 
     @property
     def food_dispenser_state(self) -> bool:
-        return bool (self._data.get("realInfo", {}).get("grainOutletState", False))
-
+        state = bool(self._data.get("realInfo", {}).get("grainOutletState", False))
+        _LOGGER.error(f"food_dispenser_state: {state}")
+        return state
+    
     @property
     def door_blocked(self) -> bool:
-        return bool (self._data.get("realInfo", {}).get("barnDoorError", False))
-
+        state = bool(self._data.get("realInfo", {}).get("barnDoorError", False))
+        _LOGGER.error(f"door_blocked: {state}")
+        return state
     @property
     def food_low(self) -> bool:
-        return bool (self._data.get("realInfo", {}).get("surplusGrain", False))
+        state = bool(self._data.get("realInfo", {}).get("surplusGrain", False))
+        _LOGGER.error(f"food_low: {state}")
+        return state
