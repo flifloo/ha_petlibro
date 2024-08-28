@@ -17,6 +17,9 @@ from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from .devices.device import Device
 from .devices.feeders.feeder import Feeder
 
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class RequiredKeysMixin(Generic[_DeviceT]):
@@ -95,22 +98,36 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up PETLIBRO switches using config entry."""
+
+    _LOGGER.error("Starting setup of PETLIBRO switches")
+
     hub = entry.runtime_data
     entities = []
 
+    _LOGGER.error("Devices found: %s", hub.devices)
+
     for device in hub.devices:
+        _LOGGER.error("Processing device: %s", device)
         # Add statically defined switches
         for device_type, entity_descriptions in DEVICE_SWITCH_MAP.items():
+            _LOGGER.error("Device matches type %s. Adding static switches.", device_type)
             if isinstance(device, device_type):
                 for description in entity_descriptions:
+                    _LOGGER.error("Creating switch entity: %s", description)
                     entity = PetLibroSwitchEntity(device, hub, description)
                     entities.append(entity)
+            else:
+                _LOGGER.error("Device does not match type %s.", device_type)
 
         # Add dynamically generated feeding plan switches for Feeder devices
         if isinstance(device, Feeder):
+            _LOGGER.error("Device is a Feeder. Generating feeding plan switches.")
             feeding_plan_switches = generate_feeding_plan_switches(device)
+            _LOGGER.error("Generated feeding plan switches: %s", feeding_plan_switches)
             for description in feeding_plan_switches:
+                _LOGGER.error("Creating switch entity: %s", description)
                 entity = PetLibroSwitchEntity(device, hub, description)
                 entities.append(entity)
 
+    _LOGGER.error("Adding entities to Home Assistant: %d entities", len(entities))
     async_add_entities(entities)
