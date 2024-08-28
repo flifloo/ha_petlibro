@@ -17,10 +17,6 @@ from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from .devices.device import Device
 from .devices.feeders.feeder import Feeder
 
-import logging
-
-_LOGGER = logging.getLogger(__name__)
-
 @dataclass(frozen=True)
 class RequiredKeysMixin(Generic[_DeviceT]):
     """A class that describes devices switch entity required keys."""
@@ -73,25 +69,6 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
         """Turn the switch off."""
         await self.entity_description.set_fn(self.device, False)
 
-def generate_feeding_plan_switches(device: Feeder) -> List[PetLibroSwitchEntityDescription[Feeder]]:
-    """Generate switch descriptions for each feeding plan."""
-    switches = []
-
-    feeding_plans = device.feeding_plans.get("plans", [])
-    for plan in feeding_plans:
-        plan_id = plan["planId"]
-        time = plan["time"]
-
-        switch_description = PetLibroSwitchEntityDescription[Feeder](
-            key=f"daily_feeding_plan_{plan_id}",
-            name=f"Feeding Plan {time}",
-            translation_key=f"daily_feeding_plan_{plan_id}",  # Assuming dynamic translation if needed
-            set_fn=lambda dev, value, plan_id=plan_id: dev.set_feeding_plan_state(plan_id, value)
-        )
-        switches.append(switch_description)
-
-    return switches
-
 async def async_setup_entry(
     _: HomeAssistant,
     entry: PetLibroHubConfigEntry,
@@ -99,35 +76,12 @@ async def async_setup_entry(
 ) -> None:
     """Set up PETLIBRO switches using config entry."""
 
-    _LOGGER.error("Starting setup of PETLIBRO switches")
-
     hub = entry.runtime_data
-    entities = []
-
-    _LOGGER.error("Devices found: %s", hub.devices)
-
-    for device in hub.devices:
-        _LOGGER.error("Processing device: %s", device)
-        # Add statically defined switches
-        for device_type, entity_descriptions in DEVICE_SWITCH_MAP.items():
-            _LOGGER.error("Device matches type %s. Adding static switches.", device_type)
-            if isinstance(device, device_type):
-                for description in entity_descriptions:
-                    _LOGGER.error("Creating switch entity: %s", description)
-                    entity = PetLibroSwitchEntity(device, hub, description)
-                    entities.append(entity)
-            else:
-                _LOGGER.error("Device does not match type %s.", device_type)
-
-        # Add dynamically generated feeding plan switches for Feeder devices
-        if isinstance(device, Feeder):
-            _LOGGER.error("Device is a Feeder. Generating feeding plan switches.")
-            feeding_plan_switches = generate_feeding_plan_switches(device)
-            _LOGGER.error("Generated feeding plan switches: %s", feeding_plan_switches)
-            for description in feeding_plan_switches:
-                _LOGGER.error("Creating switch entity: %s", description)
-                entity = PetLibroSwitchEntity(device, hub, description)
-                entities.append(entity)
-
-    _LOGGER.error("Adding entities to Home Assistant: %d entities", len(entities))
+    entities = [
+        PetLibroSwitchEntity(device, hub, description)
+        for device in hub.devices
+        for device_type, entity_descriptions in DEVICE_SWITCH_MAP.items()
+        if isinstance(device, device_type)
+        for description in entity_descriptions
+    ]
     async_add_entities(entities)

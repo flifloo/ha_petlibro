@@ -55,9 +55,6 @@
             },
             "manual_feed": {
                 "name": "Manual feed"
-            },
-            "daily_feeding_plan": {
-                "name": "Feeding plan {time}"
             }
         },
         "binary_sensor": {
