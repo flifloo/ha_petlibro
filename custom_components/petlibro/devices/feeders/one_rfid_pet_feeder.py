@@ -24,6 +24,8 @@ class OneRFIDPetFeeder(Feeder):
             "realInfo": real_info
         })
 
+    _LOGGER.debug(f"Final _data structure: {self._data}")
+
     @property
     def remaining_desiccant(self) -> str:
         return cast(str, self._data.get("remainingDesiccantDays"))
