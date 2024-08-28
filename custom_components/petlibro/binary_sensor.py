@@ -40,11 +40,6 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
 
     entity_description: PetLibroBinarySensorEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
-    def __init__(self, device: _DeviceT, hub: PetLibroHubConfigEntry, description: PetLibroBinarySensorEntityDescription[_DeviceT]) -> None:
-        """Initialize the binary sensor."""
-        super().__init__(device, hub, description)
-        self._state = False  # Initialize state
-
     @cached_property
     def device_class(self) -> BinarySensorDeviceClass | None:
         """Return the device class to use in the frontend, if any."""
@@ -52,37 +47,12 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
 
     @property
     def is_on(self) -> bool:
-        """Return true if the binary sensor is on."""
-        return self._state
-    
-    async def async_update(self) -> None:
-        """Fetch new state data for the sensor."""
-        return self._state
+        """Return True if the binary sensor is on."""
+        if not self.entity_description.should_report(self.device):
+            return False
 
-    async def _fetch_state_from_device(self) -> bool:
-        """Fetch the state from the actual device based on the sensor key."""
-        _LOGGER.error("Entering _fetch_state_from_device method")
-        if isinstance(self.device, OneRFIDPetFeeder):
-            feeder = cast(OneRFIDPetFeeder, self.device)
-            
-            sensor_key_to_property = {
-                "door_state": feeder.door_state,
-                "food_dispenser_state": feeder.food_dispenser_state,
-                "door_blocked": feeder.door_blocked,
-                "food_low": feeder.food_low
-            }
-            
-            state_property_fn = sensor_key_to_property.get(self.entity_description.key)
-            
-            if state_property_fn is not None:
-                state = state_property_fn
-                _LOGGER.error(f"Fetching state for key '{self.entity_description.key}': {state}")
-                return state
-            
-            _LOGGER.error(f"Key '{self.entity_description.key}' not found in sensor_key_to_property.")
-        
-        _LOGGER.error("Device is not of type OneRFIDPetFeeder or no matching key found.")
-        return False
+        state = getattr(self.device, self.entity_description.key)
+        return bool(state)
 
 DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDescription]] = {
     GranaryFeeder: [
@@ -92,25 +62,29 @@ DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDesc
             key="door_state",
             translation_key="door_state",
             icon="mdi:door",
-            device_class=BinarySensorDeviceClass.OPENING
+            device_class=BinarySensorDeviceClass.DOOR,
+            should_report=lambda device: device.door_state is not None,
         ),
         PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
             key="food_dispenser_state",
             translation_key="food_dispenser_state",
             icon="mdi:bowl-outline",
-            device_class=BinarySensorDeviceClass.PROBLEM
+            device_class=BinarySensorDeviceClass.PROBLEM,
+            should_report=lambda device: device.food_dispenser_state is not None,
         ),
         PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
             key="door_blocked",
             translation_key="door_blocked",
             icon="mdi:door",
-            device_class=BinarySensorDeviceClass.PROBLEM
+            device_class=BinarySensorDeviceClass.PROBLEM,
+            should_report=lambda device: device.door_blocked is not None,
         ),
         PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
             key="food_low",
             translation_key="food_low",
             icon="mdi:bowl-mix-outline",
-            device_class=BinarySensorDeviceClass.PROBLEM
+            device_class=BinarySensorDeviceClass.PROBLEM,
+            should_report=lambda device: device.food_low is not None,
         )
     ]
 }
