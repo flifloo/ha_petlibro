@@ -40,10 +40,45 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
 
     entity_description: PetLibroBinarySensorEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
+    def __init__(self, device: _DeviceT, hub: PetLibroHubConfigEntry, description: PetLibroBinarySensorEntityDescription[_DeviceT]) -> None:
+        """Initialize the binary sensor."""
+        super().__init__(device, hub, description)
+        self._state = False  # Initialize state
+
     @cached_property
     def device_class(self) -> BinarySensorDeviceClass | None:
         """Return the device class to use in the frontend, if any."""
         return self.entity_description.device_class
+
+    @property
+    def is_on(self) -> bool:
+        """Return true if the binary sensor is on."""
+        return self._state
+    
+    async def async_update(self) -> None:
+        """Fetch new state data for the sensor."""
+        self._state = await self._fetch_state_from_device()
+
+    async def _fetch_state_from_device(self) -> bool:
+        """Fetch the state from the actual device based on the sensor key."""
+        if isinstance(self.device, OneRFIDPetFeeder):
+            feeder = cast(OneRFIDPetFeeder, self.device)
+            
+            # Mapping entity descriptions to corresponding feeder properties
+            sensor_key_to_property = {
+                "door_state": feeder.door_state,
+                "food_dispenser_state": feeder.food_dispenser_state,
+                "door_blocked": feeder.door_blocked,
+                "food_low": feeder.food_low
+            }
+            
+            # Retrieve the state based on the entity description key
+            state_property = sensor_key_to_property.get(self.entity_description.key)
+            if state_property is not None:
+                return state_property
+            
+        # Default to False if key not found or device type is not matched
+        return False
 
 DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDescription]] = {
     GranaryFeeder: [
