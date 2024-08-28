@@ -57,8 +57,7 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
     
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""
-        _LOGGER.error(f"Calling async_update for {self.entity_description.key}")
-        self._state = await self._fetch_state_from_device()
+        return self._state
 
     async def _fetch_state_from_device(self) -> bool:
         """Fetch the state from the actual device based on the sensor key."""
@@ -66,7 +65,6 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
         if isinstance(self.device, OneRFIDPetFeeder):
             feeder = cast(OneRFIDPetFeeder, self.device)
             
-            # Create a dictionary mapping sensor keys to corresponding device properties
             sensor_key_to_property = {
                 "door_state": feeder.door_state,
                 "food_dispenser_state": feeder.food_dispenser_state,
@@ -74,7 +72,6 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
                 "food_low": feeder.food_low
             }
             
-            # Get the property corresponding to the current entity description key
             state_property_fn = sensor_key_to_property.get(self.entity_description.key)
             
             if state_property_fn is not None:
