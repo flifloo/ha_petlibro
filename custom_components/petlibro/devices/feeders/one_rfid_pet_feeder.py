@@ -1,14 +1,11 @@
 from typing import cast
 
 from .feeder import Feeder
-import time
-import requests
 
-
-import logging
+from logging import getLogger
 
 # Configure the logger
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = getLogger(__name__)
 
 class OneRFIDPetFeeder(Feeder):   
     async def refresh(self):
@@ -24,7 +21,7 @@ class OneRFIDPetFeeder(Feeder):
             "realInfo": real_info
         })
 
-    _LOGGER.debug(f"Final _data structure: {self._data}")
+    _LOGGER.error(f"Final _data structure: {self._data}")
 
     @property
     def remaining_desiccant(self) -> str:
