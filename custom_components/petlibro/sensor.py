@@ -19,7 +19,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .devices import Device
 from .devices.feeders.feeder import Feeder
 from .devices.feeders.granary_feeder import GranaryFeeder
-from .devices.feeders.one_rfid_pet_feeder import OneRFIDPetFeeder
+from .devices.feeders.one_rfid_smart_feeder import OneRFIDSmartFeeder
 from . import PetLibroHubConfigEntry
 from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 
@@ -116,13 +116,13 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             state_class=SensorStateClass.TOTAL_INCREASING
         )
     ],
-    OneRFIDPetFeeder: [
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+    OneRFIDSmartFeeder: [
+        PetLibroSensorEntityDescription[OneRFIDSmartFeeder](
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
             icon="mdi:package"
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroSensorEntityDescription[OneRFIDSmartFeeder](
             key="today_feeding_quantity",
             translation_key="today_feeding_quantity",
             icon="mdi:scale",
@@ -130,26 +130,26 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             device_class_fn=device_class_feeder,
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroSensorEntityDescription[OneRFIDSmartFeeder](
             key="today_feeding_times",
             translation_key="today_feeding_times",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroSensorEntityDescription[OneRFIDSmartFeeder](
             key="today_eating_times",
             translation_key="today_eating_times",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](            
+        PetLibroSensorEntityDescription[OneRFIDSmartFeeder](            
             key="today_eating_time",
             translation_key="today_eating_time",
             native_unit_of_measurement="s",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[OneRFIDPetFeeder](            
+        PetLibroSensorEntityDescription[OneRFIDSmartFeeder](            
             key="battery_state",
             translation_key="battery_state",
             icon="mdi:battery-alert",

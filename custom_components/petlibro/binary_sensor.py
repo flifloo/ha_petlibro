@@ -18,7 +18,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .devices import Device
 from .devices.feeders.feeder import Feeder
 from .devices.feeders.granary_feeder import GranaryFeeder
-from .devices.feeders.one_rfid_pet_feeder import OneRFIDPetFeeder
+from .devices.feeders.one_rfid_smart_feeder import OneRFIDSmartFeeder
 from . import PetLibroHubConfigEntry
 from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 
@@ -57,29 +57,29 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
 DEVICE_BINARY_SENSOR_MAP: dict[type[Device], list[PetLibroBinarySensorEntityDescription]] = {
     GranaryFeeder: [
     ],
-    OneRFIDPetFeeder: [
-        PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
+    OneRFIDSmartFeeder: [
+        PetLibroBinarySensorEntityDescription[OneRFIDSmartFeeder](
             key="door_state",
             translation_key="door_state",
             icon="mdi:door",
             device_class=BinarySensorDeviceClass.DOOR,
             should_report=lambda device: device.door_state is not None,
         ),
-        PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroBinarySensorEntityDescription[OneRFIDSmartFeeder](
             key="food_dispenser_state",
             translation_key="food_dispenser_state",
             icon="mdi:bowl-outline",
             device_class=BinarySensorDeviceClass.PROBLEM,
             should_report=lambda device: device.food_dispenser_state is not None,
         ),
-        PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroBinarySensorEntityDescription[OneRFIDSmartFeeder](
             key="door_blocked",
             translation_key="door_blocked",
             icon="mdi:door",
             device_class=BinarySensorDeviceClass.PROBLEM,
             should_report=lambda device: device.door_blocked is not None,
         ),
-        PetLibroBinarySensorEntityDescription[OneRFIDPetFeeder](
+        PetLibroBinarySensorEntityDescription[OneRFIDSmartFeeder](
             key="food_low",
             translation_key="food_low",
             icon="mdi:bowl-mix-outline",
