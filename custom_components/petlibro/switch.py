@@ -17,6 +17,7 @@ from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from .devices.device import Device
 from .devices.feeders.feeder import Feeder
 
+
 @dataclass(frozen=True)
 class RequiredKeysMixin(Generic[_DeviceT]):
     """A class that describes devices switch entity required keys."""
