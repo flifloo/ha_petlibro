@@ -45,6 +45,7 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
     ]
 }
 
+
 class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
     """PETLIBRO button entity."""
 
