@@ -1,8 +1,8 @@
 from typing import cast
+from logging import getLogger
 
 from .feeder import Feeder
 
-from logging import getLogger
 
 # Configure the logger
 _LOGGER = getLogger(__name__)
