@@ -68,9 +68,9 @@ async def async_setup_entry(
 
 
     for device in hub.devices:
-        _LOGGER.error(f"Device type: {type(device)}, device name: {device.name}")
+        _LOGGER.error("Device type: %s, device name: %s", type(device), device.name)
         if isinstance(device, Feeder):
-            _LOGGER.error(f"Feeder device found: {device.serial}")
+            _LOGGER.error("Feeder device found: %s", device.serial)
 
 
     entities = [
