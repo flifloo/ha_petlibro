@@ -2,6 +2,7 @@
 from typing import Optional, cast
 from . import Device
 
+
 UNITS = {
     1: "cup",
     2: "oz",
