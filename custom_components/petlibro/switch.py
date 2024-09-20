@@ -17,7 +17,6 @@ from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from .devices.device import Device
 from .devices.feeders.feeder import Feeder
 
-
 @dataclass(frozen=True)
 class RequiredKeysMixin(Generic[_DeviceT]):
     """A class that describes devices switch entity required keys."""
@@ -43,10 +42,9 @@ DEVICE_SWITCH_MAP: dict[type[Device], list[PetLibroSwitchEntityDescription]] = {
             key="feeding_plan_today_all",
             translation_key="feeding_plan_today_all",
             set_fn=lambda device, value: device.set_feeding_plan_today_all(value)
-        ),
+        )
     ]
 }
-
 
 class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
     """PETLIBRO switch entity."""
@@ -66,13 +64,13 @@ class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
         """Turn the switch off."""
         await self.entity_description.set_fn(self.device, False)
 
-
 async def async_setup_entry(
     _: HomeAssistant,
     entry: PetLibroHubConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up PETLIBRO switches using config entry."""
+
     hub = entry.runtime_data
     entities = [
         PetLibroSwitchEntity(device, hub, description)

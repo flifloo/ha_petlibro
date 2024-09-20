@@ -35,6 +35,15 @@
             },
             "today_feeding_times": {
                 "name": "Today's feeding times"
+            },
+            "today_eating_time": {
+                "name": "Today's total eating time"
+            },
+            "today_eating_times": {
+                "name": "Today's eating times"
+            },
+            "battery_state": {
+                "name": "Battery level"
             }
         },
         "switch": {
@@ -43,6 +52,25 @@
             },
             "feeding_plan_today_all": {
                 "name": "Feeding plan today all"
+            }
+        },
+        "button": {
+            "manual_feed": {
+                "name": "Manual feed"
+            }
+        },
+        "binary_sensor": {
+            "door_state": {
+                "name": "Door state"
+            },
+            "food_dispenser_state": {
+                "name": "Dispenser state"
+            },
+            "door_blocked": {
+                "name": "Door error state"
+            },
+            "food_low": {
+                "name": "Food low"
             }
         }
     }

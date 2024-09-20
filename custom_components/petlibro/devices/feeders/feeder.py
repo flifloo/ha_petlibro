@@ -2,7 +2,6 @@
 from typing import Optional, cast
 from . import Device
 
-
 UNITS = {
     1: "cup",
     2: "oz",
@@ -55,6 +54,10 @@ class Feeder(Device):
 
     async def set_feeding_plan_today_all(self, value: bool):
         await self.api.set_device_feeding_plan_today_all(self.serial, value)
+        await self.refresh()
+
+    async def set_manual_feed(self):
+        await self.api.set_device_manual_feeding(self.serial)
         await self.refresh()
 
     def convert_unit(self, value: int) -> int:

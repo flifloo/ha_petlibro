@@ -8,6 +8,7 @@ from custom_components.petlibro.devices.feeders.feeder import Feeder
 
 from .devices import Device
 from .devices.feeders.granary_feeder import GranaryFeeder
+from .devices.feeders.one_rfid_smart_feeder import OneRFIDSmartFeeder
 from .const import DOMAIN
 from .hub import PetLibroHub
 
@@ -19,6 +20,11 @@ PLATFORMS_BY_TYPE = {
     ),
     GranaryFeeder: (
         Platform.SENSOR,
+        Platform.BINARY_SENSOR,
+    ),
+    OneRFIDSmartFeeder: (
+        Platform.SENSOR,
+        Platform.BINARY_SENSOR,
     ),
 }
 

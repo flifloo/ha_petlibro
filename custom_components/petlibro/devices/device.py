@@ -18,8 +18,10 @@ class Device(Event):
 
     def update_data(self, data: dict) -> None:
         """Save the device info from a data dictionary."""
+        _LOGGER.error(f"Updating data with: {data}")
         self._data.update(data)
         self.emit(EVENT_UPDATE)
+        _LOGGER.error(f"Data after update: {self._data}")
 
     async def refresh(self):
         """Refresh the device data from the API."""
