@@ -49,6 +49,9 @@ class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
         """Handle the button press."""
         await self.entity_description.set_fn(self.device)
 
+import logging
+_LOGGER = logging.getLogger(__name__)
+
 async def async_setup_entry(
     _: HomeAssistant,
     entry: PetLibroHubConfigEntry,
@@ -57,6 +60,7 @@ async def async_setup_entry(
     """Set up PETLIBRO buttons using config entry."""
 
     hub = entry.runtime_data
+    _LOGGER.error(f"Found {len(hub.devices)} devices in the hub")
     entities = [
         PetLibroButtonEntity(device, hub, description)
         for device in hub.devices
@@ -64,4 +68,7 @@ async def async_setup_entry(
         if isinstance(device, device_type)
         for description in entity_descriptions
     ]
+    _LOGGER.error(f"Adding {len(entities)} button entities")
+    if entities:
+        _LOGGER.error(f"Entities: {[entity.entity_description.key for entity in entities]}")
     async_add_entities(entities)
