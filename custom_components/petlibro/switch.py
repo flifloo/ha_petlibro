@@ -72,7 +72,6 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up PETLIBRO switches using config entry."""
-
     hub = entry.runtime_data
     entities = [
         PetLibroSwitchEntity(device, hub, description)
