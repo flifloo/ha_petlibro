@@ -46,7 +46,7 @@ class OneRFIDSmartFeeder(Feeder):
         try:
             minutes, seconds = map(int, eating_time_str.replace("''", "").split("'"))
             total_seconds = minutes * 60 + seconds
-        except ValueError as e:
+        except ValueError:
             return 0
 
         return total_seconds
