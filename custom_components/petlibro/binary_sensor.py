@@ -37,7 +37,7 @@ class PetLibroBinarySensorEntity(PetLibroEntity[_DeviceT], BinarySensorEntity): 
         """Return the device class to use in the frontend, if any."""
         return self.entity_description.device_class
 
-    @property
+    @cached_property
     def is_on(self) -> bool:
         """Return True if the binary sensor is on."""
         if not self.entity_description.should_report(self.device):
