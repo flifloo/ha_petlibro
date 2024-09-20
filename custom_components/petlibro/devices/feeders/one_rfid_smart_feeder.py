@@ -1,7 +1,7 @@
 from typing import cast
 from logging import getLogger
 
-from .feeder import GranaryFeeder
+from .granary_feeder import GranaryFeeder
 
 
 # Configure the logger
