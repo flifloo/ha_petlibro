@@ -53,8 +53,12 @@
             "feeding_plan_today_all": {
                 "name": "Feeding plan today all"
             },
+        "button": {
             "manual_feed": {
                 "name": "Manual feed"
+            },
+            "daily_feeding_plan": {
+                "name": "Feeding plan {time}"
             }
         },
         "binary_sensor": {
@@ -62,7 +66,7 @@
                 "name": "Door state"
             },
             "food_dispenser_state": {
-                "name": "dispenser state"
+                "name": "Dispenser state"
             },
             "door_blocked": {
                 "name": "Door error state"

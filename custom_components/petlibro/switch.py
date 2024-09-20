@@ -42,11 +42,6 @@ DEVICE_SWITCH_MAP: dict[type[Device], list[PetLibroSwitchEntityDescription]] = {
             key="feeding_plan_today_all",
             translation_key="feeding_plan_today_all",
             set_fn=lambda device, value: device.set_feeding_plan_today_all(value)
-        ),
-        PetLibroSwitchEntityDescription[Feeder](
-            key="manual_feed",
-            translation_key="manual_feed",
-            set_fn=lambda device, value: device.set_manual_feed(value)
         )
     ]
 }
