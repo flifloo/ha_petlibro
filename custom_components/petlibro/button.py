@@ -61,6 +61,14 @@ async def async_setup_entry(
 
     hub = entry.runtime_data
     _LOGGER.error(f"Found {len(hub.devices)} devices in the hub")
+
+
+    for device in hub.devices:
+        _LOGGER.error(f"Device type: {type(device)}, device name: {device.name}")
+        if isinstance(device, Feeder):
+            _LOGGER.error(f"Feeder device found: {device.serial}")
+
+
     entities = [
         PetLibroButtonEntity(device, hub, description)
         for device in hub.devices
