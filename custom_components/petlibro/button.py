@@ -46,10 +46,10 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
 }
 
 
-class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):
+class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):  # type: ignore [reportIncompatibleVariableOverride]
     """PETLIBRO button entity."""
 
-    entity_description: PetLibroButtonEntityDescription[_DeviceT]
+    entity_description: PetLibroButtonEntityDescription[_DeviceT]  # type: ignore [reportIncompatibleVariableOverride]
 
     async def async_press(self) -> None:
         """Handle the button press."""
