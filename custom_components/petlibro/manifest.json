@@ -1,9 +1,7 @@
 {
   "domain": "petlibro",
   "name": "PETLIBRO",
-  "codeowners": [
-    "@flifloo"
-  ],
+  "codeowners": ["@flifloo"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/flifloo/ha_petlibro",

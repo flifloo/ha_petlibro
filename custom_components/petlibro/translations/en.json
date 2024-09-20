@@ -1,49 +1,49 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Device is already configured",
-            "reauth_successful": "Reauthentication successful"
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "invalid_auth": "Invalid authentication",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "email": "Email",
-                    "password": "Password",
-                    "region": "Region"
-                }
-            },
-            "reauth_confirm": {
-                "description": "The PETLIBRO integration needs to re-authenticate your account",
-                "data": {
-                    "password": "Password"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Device is already configured",
+      "reauth_successful": "Reauthentication successful"
     },
-    "entity": {
-        "sensor": {
-            "remaining_desiccant": {
-                "name": "Desiccant remaining days"
-            },
-            "today_feeding_quantity": {
-                "name": "Today's feeding quantity"
-            },
-            "today_feeding_times": {
-                "name": "Today's feeding times"
-            }
-        },
-        "switch": {
-            "feeding_plan": {
-                "name": "Feeding plan"
-            },
-            "feeding_plan_today_all": {
-                "name": "Feeding plan today all"
-            }
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid authentication",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "email": "Email",
+          "password": "Password",
+          "region": "Region"
         }
+      },
+      "reauth_confirm": {
+        "description": "The PETLIBRO integration needs to re-authenticate your account",
+        "data": {
+          "password": "Password"
+        }
+      }
     }
+  },
+  "entity": {
+    "sensor": {
+      "remaining_desiccant": {
+        "name": "Desiccant remaining days"
+      },
+      "today_feeding_quantity": {
+        "name": "Today's feeding quantity"
+      },
+      "today_feeding_times": {
+        "name": "Today's feeding times"
+      }
+    },
+    "switch": {
+      "feeding_plan": {
+        "name": "Feeding plan"
+      },
+      "feeding_plan_today_all": {
+        "name": "Feeding plan today all"
+      }
+    }
+  }
 }

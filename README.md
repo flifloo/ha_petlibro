@@ -8,12 +8,11 @@
 
 ## Features
 
-* This is still a WIP integration
-
+- This is still a WIP integration
 
 ## Supported Devices
 
-* Granary Feeder (PLAF103)
+- Granary Feeder (PLAF103)
 
 ## Installation
 
@@ -21,11 +20,12 @@
 
 Get the folder `custom_components/petlibro` in your HA `config/custom_components`
 
-
 ### Via [HACS](https://hacs.xyz/)
+
 <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=flifloo&repository=ha_petlibro&category=integration" target="_blank"><img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open your Home Assistant instance and open a repository inside the Home Assistant Community Store." /></a>
 
 ## Configuration
+
 <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=petlibro" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a>
 
 - Enter your credentials.
