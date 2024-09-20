@@ -1,3 +1,4 @@
+{
     "config": {
         "abort": {
             "already_configured": "Device is already configured",
@@ -52,6 +53,7 @@
             "feeding_plan_today_all": {
                 "name": "Feeding plan today all"
             },
+        },
         "button": {
             "manual_feed": {
                 "name": "Manual feed"
