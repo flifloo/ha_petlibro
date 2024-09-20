@@ -84,3 +84,4 @@ async def async_setup_entry(
     if entities:
         _LOGGER.error(f"Entities: {[entity.entity_description.key for entity in entities]}")
     async_add_entities(entities)
+ 
