@@ -94,6 +94,7 @@ class PetLibroSensorEntity(PetLibroEntity[_DeviceT], SensorEntity):  # type: ign
             return device_class
         return super().device_class
 
+
 DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
     GranaryFeeder: [
         PetLibroSensorEntityDescription[GranaryFeeder](
