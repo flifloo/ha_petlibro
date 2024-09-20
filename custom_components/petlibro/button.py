@@ -55,8 +55,6 @@ class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):  # type: ign
         """Handle the button press."""
         await self.entity_description.set_fn(self.device)
 
-import logging
-_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
     _: HomeAssistant,
