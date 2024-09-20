@@ -27,6 +27,7 @@ class RequiredKeysMixin(Generic[_DeviceT]):
 
     set_fn: Callable[[_DeviceT], Coroutine[Any, Any, None]]
 
+
 @dataclass(frozen=True)
 class PetLibroButtonEntityDescription(ButtonEntityDescription, PetLibroEntityDescription[_DeviceT], RequiredKeysMixin[_DeviceT]):
     """A class that describes device button entities."""
