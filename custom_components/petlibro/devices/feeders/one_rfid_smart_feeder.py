@@ -7,7 +7,7 @@ from .feeder import Feeder
 # Configure the logger
 _LOGGER = getLogger(__name__)
 
-class OneRFIDSmartFeeder(Feeder):   
+class OneRFIDSmartFeeder(GranaryFeeder):   
     async def refresh(self):
         await super().refresh()
 
