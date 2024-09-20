@@ -47,6 +47,7 @@ DEVICE_SWITCH_MAP: dict[type[Device], list[PetLibroSwitchEntityDescription]] = {
     ]
 }
 
+
 class PetLibroSwitchEntity(PetLibroEntity[_DeviceT], SwitchEntity):
     """PETLIBRO switch entity."""
 
