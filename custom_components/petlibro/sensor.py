@@ -158,6 +158,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
     ]
 }
 
+
 async def async_setup_entry(
     _: HomeAssistant,
     entry: PetLibroHubConfigEntry,
