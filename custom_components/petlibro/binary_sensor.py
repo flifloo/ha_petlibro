@@ -3,24 +3,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from logging import getLogger
 from collections.abc import Callable
-from datetime import datetime
 from functools import cached_property
-from typing import Any, cast
 from typing import Optional
 
 from homeassistant.components.binary_sensor import BinarySensorEntity, BinarySensorEntityDescription, BinarySensorDeviceClass
-from homeassistant.const import UnitOfMass, UnitOfVolume
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .devices import Device
-from .devices.feeders.feeder import Feeder
 from .devices.feeders.granary_feeder import GranaryFeeder
 from .devices.feeders.one_rfid_smart_feeder import OneRFIDSmartFeeder
-from . import PetLibroHubConfigEntry
 from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
+from . import PetLibroHubConfigEntry
 
 
 _LOGGER = getLogger(__name__)
