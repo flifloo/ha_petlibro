@@ -18,9 +18,6 @@ from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from . import PetLibroHubConfigEntry
 
 
-_LOGGER = getLogger(__name__)
-
-
 @dataclass(frozen=True)
 class PetLibroBinarySensorEntityDescription(BinarySensorEntityDescription, PetLibroEntityDescription[_DeviceT]):
     """A class that describes device binary sensor entities."""
