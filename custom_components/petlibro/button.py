@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Callable, Coroutine
 from dataclasses import dataclass
-from functools import cached_property
 from typing import Any, Generic
+from logging import getLogger
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.const import EntityCategory
@@ -16,6 +16,10 @@ from . import PetLibroHubConfigEntry
 from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 from .devices.device import Device
 from .devices.feeders.feeder import Feeder
+
+
+_LOGGER = getLogger(__name__)
+
 
 @dataclass(frozen=True)
 class RequiredKeysMixin(Generic[_DeviceT]):
