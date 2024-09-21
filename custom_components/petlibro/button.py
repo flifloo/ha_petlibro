@@ -18,9 +18,6 @@ from .devices.device import Device
 from .devices.feeders.feeder import Feeder
 
 
-_LOGGER = getLogger(__name__)
-
-
 @dataclass(frozen=True)
 class RequiredKeysMixin(Generic[_DeviceT]):
     """A class that describes devices button entity required keys."""
@@ -55,24 +52,13 @@ class PetLibroButtonEntity(PetLibroEntity[_DeviceT], ButtonEntity):  # type: ign
         """Handle the button press."""
         await self.entity_description.set_fn(self.device)
 
-
 async def async_setup_entry(
     _: HomeAssistant,
     entry: PetLibroHubConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up PETLIBRO buttons using config entry."""
-
     hub = entry.runtime_data
-    _LOGGER.error(f"Found {len(hub.devices)} devices in the hub")
-
-
-    for device in hub.devices:
-        _LOGGER.error("Device type: %s, device name: %s", type(device), device.name)
-        if isinstance(device, Feeder):
-            _LOGGER.error("Feeder device found: %s", device.serial)
-
-
     entities = [
         PetLibroButtonEntity(device, hub, description)
         for device in hub.devices
@@ -80,8 +66,5 @@ async def async_setup_entry(
         if isinstance(device, device_type)
         for description in entity_descriptions
     ]
-    _LOGGER.error(f"Adding {len(entities)} button entities")
-    if entities:
-        _LOGGER.error(f"Entities: {[entity.entity_description.key for entity in entities]}")
     async_add_entities(entities)
  
