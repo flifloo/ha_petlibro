@@ -17,6 +17,7 @@ type PetLibroHubConfigEntry = ConfigEntry[PetLibroHub]
 PLATFORMS_BY_TYPE = {
     Feeder: (
         Platform.SWITCH,
+        Platform.BUTTON,
     ),
     GranaryFeeder: (
         Platform.SENSOR,
