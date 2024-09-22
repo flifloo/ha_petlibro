@@ -13,7 +13,8 @@
 
 ## Supported Devices
 
-* Granary Feeder (PLAF103)
+* Granary Smart Feeder (PLAF103)
+* Granary Camera Feeder
 
 ## Installation
 
@@ -31,4 +32,4 @@ Get the folder `custom_components/petlibro` in your HA `config/custom_components
 - Enter your credentials.
   > Only one device can be login at the same time
   >
-  > If you to wan to keep your phone connected, create another account for this integration and share your device to it
+  > If you to want to keep your phone connected, create another account for this integration and share your device to it

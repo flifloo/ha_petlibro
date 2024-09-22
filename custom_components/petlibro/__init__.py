@@ -7,7 +7,7 @@ from homeassistant.helpers.device_registry import DeviceEntry
 from custom_components.petlibro.devices.feeders.feeder import Feeder
 
 from .devices import Device
-from .devices.feeders.granary_feeder import GranaryFeeder
+from .devices.feeders.granary_smart_feeder import GranarySmartFeeder
 from .const import DOMAIN
 from .hub import PetLibroHub
 
@@ -17,7 +17,7 @@ PLATFORMS_BY_TYPE = {
     Feeder: (
         Platform.SWITCH,
     ),
-    GranaryFeeder: (
+    GranarySmartFeeder: (
         Platform.SENSOR,
     ),
 }

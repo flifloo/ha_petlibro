@@ -1,4 +1,4 @@
-from .granary_feeder import GranaryFeeder
+from .granary_smart_feeder import GranarySmartFeeder
 
-class GranaryCameraFeeder(GranaryFeeder):
+class GranaryCameraFeeder(GranarySmartFeeder):
   pass
