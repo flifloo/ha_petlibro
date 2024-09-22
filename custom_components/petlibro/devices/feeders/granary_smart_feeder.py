@@ -3,7 +3,7 @@ from typing import cast
 from .feeder import Feeder
 
 
-class GranaryFeeder(Feeder):
+class GranarySmartFeeder(Feeder):
     async def refresh(self):
         await super().refresh()
         self.update_data({
