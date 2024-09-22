@@ -18,7 +18,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .devices import Device
 from .devices.feeders.feeder import Feeder
-from .devices.feeders.granary_feeder import GranaryFeeder
+from .devices.feeders.granary_smart_feeder import GranarySmartFeeder
 from . import PetLibroHubConfigEntry
 from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 
@@ -95,13 +95,13 @@ class PetLibroSensorEntity(PetLibroEntity[_DeviceT], SensorEntity):  # type: ign
 
 
 DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
-    GranaryFeeder: [
-        PetLibroSensorEntityDescription[GranaryFeeder](
+    GranarySmartFeeder: [
+        PetLibroSensorEntityDescription[GranarySmartFeeder](
             key="remaining_desiccant",
             translation_key="remaining_desiccant",
             icon="mdi:package"
         ),
-        PetLibroSensorEntityDescription[GranaryFeeder](
+        PetLibroSensorEntityDescription[GranarySmartFeeder](
             key="today_feeding_quantity",
             translation_key="today_feeding_quantity",
             icon="mdi:scale",
@@ -109,7 +109,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             device_class_fn=device_class_feeder,
             state_class=SensorStateClass.TOTAL_INCREASING
         ),
-        PetLibroSensorEntityDescription[GranaryFeeder](
+        PetLibroSensorEntityDescription[GranarySmartFeeder](
             key="today_feeding_times",
             translation_key="today_feeding_times",
             icon="mdi:history",
