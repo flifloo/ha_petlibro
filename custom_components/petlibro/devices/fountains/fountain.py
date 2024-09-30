@@ -14,9 +14,9 @@ UNITS_RATIO = {
 class Fountain(Device):
     async def refresh(self):
         await super().refresh()
-        self.update_data({
-            "feedingPlanTodayNew": await self.api.device_feeding_plan_today_new(self.serial)
-        })
+        #self.update_data({
+        #    "feedingPlanTodayNew": await self.api.device_feeding_plan_today_new(self.serial)
+        #})
 
     @property
     def unit_id(self) -> int | None:

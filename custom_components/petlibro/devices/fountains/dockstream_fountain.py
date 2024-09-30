@@ -7,7 +7,7 @@ class DockstreamFountain(Fountain):
     async def refresh(self):
         await super().refresh()
         self.update_data({
-            "realInfo": await self.api.device_grain_status(self.serial)
+            "realInfo": await self.api.device_real_info(self.serial)
         })
 
     @property
