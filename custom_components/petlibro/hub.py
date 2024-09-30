@@ -52,7 +52,7 @@ class PetLibroHub:
             if device := await self.get_device(device_data["deviceSn"]):
                 await device.refresh()
             else:
-                if device_data["productIdentifier"] in product_name_map:
+                if device_data["productIdentifier"] in product_id_map:
                     device = product_name_map[device_data["productIdentifier"]](device_data, self.api)
                     await device.refresh()  # Get all API data
                     self.devices.append(device)
