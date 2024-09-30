@@ -57,7 +57,7 @@ class PetLibroHub:
                     await device.refresh()  # Get all API data
                     self.devices.append(device)
                 else:
-                    _LOGGER.error("Unsupported device found: %s", device_data["productIdentifier"])
+                    _LOGGER.info("Unsupported device found: %s", device_data["productIdentifier"])
 
     async def refresh_devices(self) -> bool:
         """Update all known devices states from the PETLIBRO API."""
