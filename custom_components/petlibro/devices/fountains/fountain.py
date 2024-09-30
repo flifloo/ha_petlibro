@@ -8,7 +8,7 @@ UNITS = {
 
 UNITS_RATIO = {
     1: 1,
-    2: 0.35
+    2: 0.034
 }
 
 class Fountain(Device):
