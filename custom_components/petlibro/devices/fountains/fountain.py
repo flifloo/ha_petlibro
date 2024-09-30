@@ -30,3 +30,5 @@ class Fountain(Device):
 
         return unit
 
+    def convert_unit(self, value: int) -> int:
+         return value
