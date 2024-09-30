@@ -2,10 +2,8 @@ from typing import Optional, cast
 from . import Device
 
 UNITS = {
-    1: "cup",
-    2: "oz",
-    3: "g",
-    4: "mL"
+    1: "ml",
+    2: "oz"
 }
 
 class Fountain(Device):

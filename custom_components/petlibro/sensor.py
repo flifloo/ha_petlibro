@@ -54,9 +54,7 @@ def unit_of_measurement_fountain(device: Fountain) -> str | None:
     return device.unit_type
 
 def device_class_fountain(device: Fountain) -> SensorDeviceClass | None:
-    if device.unit_type in [UnitOfMass.OUNCES, UnitOfMass.GRAMS]:
-        return SensorDeviceClass.WEIGHT
-    if device.unit_type in ["cup", UnitOfVolume.MILLILITERS]:
+    if device.unit_type in ["ml", UnitOfVolume.MILLILITERS]:
         return SensorDeviceClass.VOLUME
 
 
