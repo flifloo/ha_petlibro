@@ -17,7 +17,7 @@ from .api import PetLibroAPIError
 from .devices import Device, product_name_map, product_id_map
 
 _LOGGER = getLogger(__name__)
-UPDATE_INTERVAL_SECONDS = 60 * 5
+UPDATE_INTERVAL_SECONDS = 60 * 2
 
 
 class PetLibroHub:
@@ -37,6 +37,7 @@ class PetLibroHub:
             name=DOMAIN,
             update_method=self.refresh_devices,
             update_interval=timedelta(seconds=UPDATE_INTERVAL_SECONDS),
+            
         )
 
     async def get_device(self, serial: str) -> Optional[Device]:
