@@ -145,7 +145,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             icon="mdi:water",
             native_unit_of_measurement_fn=unit_of_measurement_fountain,
             device_class_fn=device_class_fountain,
-            state_class=SensorStateClass.INCREASING
+            state_class=SensorStateClass.TOTAL_INCREASING
         )
     ]
 }
