@@ -150,7 +150,7 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             key="weight_percent",
             translation_key="weight_percent",
             icon="mdi:percent",
-            unit_of_measurement="%",
+            native_unit_of_measurement="%",
             device_class=SensorDeviceClass.MOISTURE,
         )
     ]
