@@ -144,13 +144,13 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             native_unit_of_measurement_fn=unit_of_measurement_fountain,
             device_class_fn=device_class_fountain,
             device_class=SensorDeviceClass.VOLUME,
-            state_class=SensorStateClass.TOTAL_INCREASING
+            state_class=SensorStateClass.MEASUREMENT
         ),
         PetLibroSensorEntityDescription[DockstreamFountain](
             key="weight_percent",
             translation_key="weight_percent",
             icon="mdi:percent",
-            device_class=SensorDeviceClass.BATTERY,
+            device_class=SensorDeviceClass.MOISTURE,
         )
     ]
 }
