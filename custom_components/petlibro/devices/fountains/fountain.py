@@ -6,6 +6,11 @@ UNITS = {
     2: "oz"
 }
 
+UNITS_RATIO = {
+    1: 1,
+    2: 0.35
+}
+
 class Fountain(Device):
     async def refresh(self):
         await super().refresh()
@@ -29,4 +34,12 @@ class Fountain(Device):
         return unit
 
     def convert_unit(self, value: int) -> int:
-         return value
+        """
+        Convert a value to the device unit
+
+        :param unit: Value to convert
+        :return: Converted value or unchanged if no unit
+        """
+        if self.unit_id:
+            return value * UNITS_RATIO.get(self.unit_id, 1)
+        return value
