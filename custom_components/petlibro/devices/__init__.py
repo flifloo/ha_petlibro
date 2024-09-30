@@ -8,7 +8,7 @@ product_name_map : Dict[str, Type[Device]] = {
     "Granary Camera Feeder": GranaryCameraFeeder
 }
 
-prodcut_id_map: Dict[str, Type[Device]] = {
+product_id_map: Dict[str, Type[Device]] = {
     "PLAF103": GranaryFeeder,
     "PLAF203": GranaryCameraFeeder
 }
