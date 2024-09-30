@@ -19,6 +19,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .devices import Device
 from .devices.feeders.feeder import Feeder
 from .devices.feeders.granary_feeder import GranaryFeeder
+from .devices.fountains.fountain import Fountain
+from .devices.fountains.dockstream_fountain import DockstreamFountain
 from . import PetLibroHubConfigEntry
 from .entity import PetLibroEntity, _DeviceT, PetLibroEntityDescription
 
@@ -45,6 +47,14 @@ def device_class_feeder(device: Feeder) -> SensorDeviceClass | None:
     if device.unit_type in [UnitOfMass.OUNCES, UnitOfMass.GRAMS]:
         return SensorDeviceClass.WEIGHT
     if device.unit_type in ["cup", UnitOfVolume.MILLILITERS]:
+        return SensorDeviceClass.VOLUME
+    
+
+def unit_of_measurement_fountain(device: Fountain) -> str | None:
+    return device.unit_type
+
+def device_class_fountain(device: Fountain) -> SensorDeviceClass | None:
+    if device.unit_type in ["ml", UnitOfVolume.MILLILITERS]:
         return SensorDeviceClass.VOLUME
 
 
@@ -114,6 +124,34 @@ DEVICE_SENSOR_MAP: dict[type[Device], list[PetLibroSensorEntityDescription]] = {
             translation_key="today_feeding_times",
             icon="mdi:history",
             state_class=SensorStateClass.TOTAL_INCREASING
+        )
+    ],
+    DockstreamFountain: [
+        PetLibroSensorEntityDescription[DockstreamFountain](
+            key="remaining_cleaning",
+            translation_key="remaining_cleaning",
+            icon="mdi:calendar-clock"
+        ),
+        PetLibroSensorEntityDescription[DockstreamFountain](
+            key="remaining_replacement_days",
+            translation_key="remaining_replacement_days",
+            icon="mdi:calendar-clock"
+        ),
+        PetLibroSensorEntityDescription[DockstreamFountain](
+            key="today_totalMl",
+            translation_key="today_totalMl",
+            icon="mdi:water",
+            native_unit_of_measurement_fn=unit_of_measurement_fountain,
+            device_class_fn=device_class_fountain,
+            device_class=SensorDeviceClass.VOLUME,
+            state_class=SensorStateClass.MEASUREMENT
+        ),
+        PetLibroSensorEntityDescription[DockstreamFountain](
+            key="weight_percent",
+            translation_key="weight_percent",
+            icon="mdi:percent",
+            native_unit_of_measurement="%",
+            device_class=SensorDeviceClass.MOISTURE,
         )
     ]
 }
