@@ -4,7 +4,7 @@ from . import Device
 
 
 UNITS = {
-    1: "cup",
+    1: "cups",
     2: "oz",
     3: "g",
     4: "mL"
@@ -62,8 +62,8 @@ class Feeder(Device):
         Convert a value to the device unit
 
         :param unit: Value to convert
-        :return: Converted value or unchanged if no unit
+        :return: Converted value or unchanged if no unit (truncated to 2 decimal points)
         """
         if self.unit_id:
-            return value * UNITS_RATIO.get(self.unit_id, 1)
-        return value
+            return float('%.2f'%(value)) * UNITS_RATIO.get(self.unit_id, 1)
+        return float('%.2f'%(value))
