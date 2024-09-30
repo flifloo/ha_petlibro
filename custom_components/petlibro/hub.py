@@ -14,7 +14,7 @@ from custom_components.petlibro.api import PetLibroAPI
 
 from .const import DOMAIN
 from .api import PetLibroAPIError
-from .devices import Device, product_name_map
+from .devices import Device, product_name_map, product_id_map
 
 _LOGGER = getLogger(__name__)
 UPDATE_INTERVAL_SECONDS = 60 * 5
