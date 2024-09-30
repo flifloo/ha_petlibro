@@ -53,11 +53,11 @@ class PetLibroHub:
                 await device.refresh()
             else:
                 if device_data["productIdentifier"] in product_name_map:
-                    device = product_name_map[device_data["productName"]](device_data, self.api)
+                    device = product_name_map[device_data["productIdentifier"]](device_data, self.api)
                     await device.refresh()  # Get all API data
                     self.devices.append(device)
                 else:
-                    _LOGGER.error("Unsupported device found: %s", device_data["productName"])
+                    _LOGGER.error("Unsupported device found: %s", device_data["productIdentifier"])
 
     async def refresh_devices(self) -> bool:
         """Update all known devices states from the PETLIBRO API."""
