@@ -20,7 +20,7 @@ class DockstreamFountain(Fountain):
 
     @property
     def today_totalMl(self) -> int:
-        quantity = self._data.get("totalTotalMl")
+        quantity = self._data.get("todayTotalMl")
         if not quantity:
             return 0
 

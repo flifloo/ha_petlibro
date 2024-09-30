@@ -45,7 +45,7 @@
             "remaining_cleaning": {
                 "name": "Cleaning remaining days"
             },
-            "remaining_filter": {
+            "remaining_replacement_days": {
                 "name": "Filter remaining days"
             },
             "weight_percent": {
