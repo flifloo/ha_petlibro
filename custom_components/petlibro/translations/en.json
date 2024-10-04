@@ -35,7 +35,26 @@
             },
             "today_feeding_times": {
                 "name": "Today's feeding times"
+            },
+            "today_water_quantity": {
+                "name": "Today's water quantity"
+            },
+            "today_water_times": {
+                "name": "Today's water times"
+            },
+            "remaining_cleaning": {
+                "name": "Cleaning remaining days"
+            },
+            "remaining_replacement_days": {
+                "name": "Filter remaining days"
+            },
+            "weight_percent": {
+                "name": "Water Remaining"
+            },
+            "today_totalMl": {
+                "name": "Today's total water"
             }
+
         },
         "switch": {
             "feeding_plan": {
