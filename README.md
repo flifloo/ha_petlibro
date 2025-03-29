@@ -6,6 +6,9 @@
 
 # PETLIBRO integration for Home Assistant
 
+> [!IMPORTANT]  
+> This project is archived, please go use the fork created by [jjjonesjr33](https://github.com/jjjonesjr33/petlibro)
+
 ## Features
 
 * This is still a WIP integration
