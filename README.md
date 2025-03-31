@@ -16,7 +16,8 @@
 
 ## Supported Devices
 
-* Granary Feeder (PLAF103)
+* Granary Smart Feeder (PLAF103)
+* Granary Smart Camera Feeder (PLAF203)
 
 ## Installation
 
