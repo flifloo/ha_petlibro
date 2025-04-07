@@ -14,10 +14,10 @@ from custom_components.petlibro.api import PetLibroAPI
 
 from .const import DOMAIN
 from .api import PetLibroAPIError
-from .devices import Device, product_name_map
+from .devices import Device, product_name_map, product_id_map
 
 _LOGGER = getLogger(__name__)
-UPDATE_INTERVAL_SECONDS = 60 * 5
+UPDATE_INTERVAL_SECONDS = 60 * 2
 
 
 class PetLibroHub:
@@ -37,6 +37,7 @@ class PetLibroHub:
             name=DOMAIN,
             update_method=self.refresh_devices,
             update_interval=timedelta(seconds=UPDATE_INTERVAL_SECONDS),
+            
         )
 
     async def get_device(self, serial: str) -> Optional[Device]:
@@ -52,12 +53,12 @@ class PetLibroHub:
             if device := await self.get_device(device_data["deviceSn"]):
                 await device.refresh()
             else:
-                if device_data["productName"] in product_name_map:
-                    device = product_name_map[device_data["productName"]](device_data, self.api)
+                if device_data["productIdentifier"] in product_id_map:
+                    device = product_id_map[device_data["productIdentifier"]](device_data, self.api)
                     await device.refresh()  # Get all API data
                     self.devices.append(device)
                 else:
-                    _LOGGER.error("Unsupported device found: %s", device_data["productName"])
+                    _LOGGER.info("Unsupported device found: %s", device_data["productIdentifier"])
 
     async def refresh_devices(self) -> bool:
         """Update all known devices states from the PETLIBRO API."""
